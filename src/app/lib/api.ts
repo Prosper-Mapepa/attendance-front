@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://attendance-iq-api-production.up.railway.app';
+// Temporary CORS proxy solution - replace with direct API URL once CORS is fixed
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cors-anywhere.herokuapp.com/https://attendance-iq-api-production.up.railway.app';
 
 console.log('API Configuration:');
 console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
