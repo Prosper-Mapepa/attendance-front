@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://attendance-iq-api.railway.internal';
 
+console.log('API Configuration:');
+console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+console.log('Using API_BASE_URL:', API_BASE_URL);
+
 // Create axios instance with default configuration
 const api = axios.create({
   baseURL: API_BASE_URL,
