@@ -1,26 +1,147 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
+  /* AttendIQ Brand Colors */
+  --cmu-maroon: #8F1A27;
+  --cmu-maroon-light: #A52A2A;
+  --cmu-maroon-dark: #660000;
+  --cmu-gold: #FFD700;
+  --cmu-gold-light: #FFF8DC;
+  --cmu-gold-dark: #B8860B;
+  
+  /* Neutral colors */
   --background: #ffffff;
   --foreground: #171717;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-cmu-maroon: var(--cmu-maroon);
+  --color-cmu-maroon-light: var(--cmu-maroon-light);
+  --color-cmu-maroon-dark: var(--cmu-maroon-dark);
+  --color-cmu-gold: var(--cmu-gold);
+  --color-cmu-gold-light: var(--cmu-gold-light);
+  --color-cmu-gold-dark: var(--cmu-gold-dark);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* CMU Brand Utilities */
+.text-cmu-maroon {
+  color: var(--cmu-maroon);
+}
+
+.text-cmu-gold {
+  color: var(--cmu-gold);
+}
+
+.bg-cmu-maroon {
+  background-color: var(--cmu-maroon);
+}
+
+.bg-cmu-gold {
+  background-color: var(--cmu-gold);
+}
+
+.border-cmu-maroon {
+  border-color: var(--cmu-maroon);
+}
+
+.border-cmu-gold {
+  border-color: var(--cmu-gold);
+}
+
+/* Custom button styles */
+.btn-cmu-primary {
+  background-color: var(--cmu-maroon);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-cmu-primary:hover {
+  background-color: var(--cmu-maroon-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+}
+
+.btn-cmu-secondary {
+  background-color: var(--cmu-gold);
+  color: var(--cmu-maroon);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-cmu-secondary:hover {
+  background-color: var(--cmu-gold-dark);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+/* Card styles */
+.card-cmu {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-200);
+  transition: all 0.2s ease;
+}
+
+.card-cmu:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Header styles */
+.header-cmu {
+  background: linear-gradient(135deg, var(--cmu-maroon) 0%, var(--cmu-maroon-dark) 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation styles */
+.nav-cmu {
+  background: white;
+  border-bottom: 3px solid var(--cmu-gold);
+}
+
+.nav-cmu .nav-item {
+  color: var(--gray-600);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-cmu .nav-item:hover {
+  color: var(--cmu-maroon);
+}
+
+.nav-cmu .nav-item.active {
+  color: var(--cmu-maroon);
+  border-bottom-color: var(--cmu-maroon);
 }

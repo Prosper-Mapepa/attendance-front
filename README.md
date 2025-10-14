@@ -1,3 +1,7 @@
+# AttendIQ - Smart Attendance Management System
+
+AttendIQ is a comprehensive attendance tracking system designed for Central Michigan University, featuring QR code scanning, OTP verification, location tracking, and real-time analytics.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
