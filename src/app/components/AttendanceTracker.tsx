@@ -71,6 +71,7 @@ export default function AttendanceTracker() {
   const [selectedClass, setSelectedClass] = useState<string>('');
   const [qrCodeData, setQrCodeData] = useState<string>('');
   const [showQR, setShowQR] = useState(false);
+  const [currentSessionOTP, setCurrentSessionOTP] = useState<string>('');
   const [showSessionModal, setShowSessionModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const { alert, showAlert, dismissAlert } = useAutoDismissAlert({ timeout: 6000 });
@@ -139,6 +140,7 @@ export default function AttendanceTracker() {
       
       const qrCodeUrl = await QRCode.toDataURL(qrData);
       setQrCodeData(qrCodeUrl);
+      setCurrentSessionOTP(newSession.otp);
       setShowQR(true);
       showAlert('Session created successfully! QR code is ready.', 'success');
     } catch (err: unknown) {
@@ -156,6 +158,7 @@ export default function AttendanceTracker() {
     
     const qrCodeUrl = await QRCode.toDataURL(qrData);
     setQrCodeData(qrCodeUrl);
+    setCurrentSessionOTP(session.otp);
     setShowQR(true);
   };
 
@@ -286,6 +289,22 @@ export default function AttendanceTracker() {
               <div className="bg-white p-4 rounded-lg mb-4">
                 <img src={qrCodeData} alt="QR Code" className="mx-auto" />
               </div>
+              
+              {/* OTP Display */}
+              {currentSessionOTP && (
+                <div className="bg-white bg-opacity-20 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-cmu-gold-light mb-2">Manual OTP Entry:</p>
+                  <div className="bg-white rounded-lg p-3">
+                    <span className="text-2xl font-mono font-bold text-cmu-maroon tracking-wider">
+                      {currentSessionOTP}
+                    </span>
+                  </div>
+                  <p className="text-xs text-cmu-gold-light mt-2">
+                    Students can also enter this code manually
+                  </p>
+                </div>
+              )}
+              
               <p className="text-sm text-cmu-gold-light mb-4">
                 Students can scan this QR code to mark their attendance
               </p>
