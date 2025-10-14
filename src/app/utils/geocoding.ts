@@ -6,15 +6,22 @@ export interface GeocodingResult {
   address: string;
 }
 
+// Extend the Window interface to include Google Maps
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 export async function geocodeAddress(address: string): Promise<GeocodingResult | null> {
   if (!window.google || !window.google.maps || !window.google.maps.Geocoder) {
     throw new Error('Google Maps API not loaded or Geocoder not available');
   }
 
-  const geocoder = new google.maps.Geocoder();
+  const geocoder = new window.google.maps.Geocoder();
   
   return new Promise((resolve, reject) => {
-    geocoder.geocode({ address }, (results, status) => {
+    geocoder.geocode({ address }, (results: any, status: any) => {
       if (status === 'OK' && results && results.length > 0) {
         const location = results[0].geometry.location;
         resolve({
