@@ -77,7 +77,7 @@ function LandingPage() {
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform mt-1" />
               </button>
-              <button className="flex group btn-cmu-secondary text-lg px-10 py-5 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+              <button onClick={() => setShowLogin(true)} className="flex group btn-cmu-secondary text-lg px-10 py-5 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 Sign In
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform mt-1" />
               </button>
