@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://attendance-iq-api.railway.internal';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://attendance-iq-api-production.up.railway.app';
 
 console.log('API Configuration:');
 console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
