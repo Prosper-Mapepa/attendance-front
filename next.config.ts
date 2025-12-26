@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   turbopack: {},
   images: {
     remotePatterns: [],
-    unoptimized: false,
+    unoptimized: true, // Disable image optimization for Netlify compatibility
   },
   // Explicitly set output for Netlify compatibility
   output: 'standalone',
