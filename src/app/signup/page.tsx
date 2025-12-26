@@ -38,7 +38,8 @@ function SignupForm() {
     setError('');
     try {
       await register(data.name, data.email, data.password, data.role);
-      // Redirect will happen automatically via AuthContext
+      // Redirect to dashboard after successful registration
+      router.push('/');
     } catch (err: unknown) {
       const error = err as Error;
       setError(error.message);
