@@ -1,5 +1,5 @@
 [build]
-  command = "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm run build"
+  command = "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && echo 'Next.js version:' && pnpm list next && pnpm run build"
   publish = ".next"
 
 [build.environment]
