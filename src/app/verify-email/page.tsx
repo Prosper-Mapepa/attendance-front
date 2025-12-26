@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Mail, CheckCircle, XCircle } from 'lucide-react';
 import Logo from '../components/Logo';
 import api from '../lib/api';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token');
@@ -148,16 +149,35 @@ export default function VerifyEmailPage() {
           )}
 
           <div className="mt-6 text-center">
-            <a
+            <Link
               href="/"
               className="text-sm text-[#8B0000] hover:underline font-medium"
             >
               Back to Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-[#A00000] via-[#8B0000] to-[#6B0000] flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full text-center">
+          <div className="flex justify-center mb-6">
+            <Logo size={80} variant="simple" />
+          </div>
+          <p className="text-white/90">Loading...</p>
+        </div>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
+  );
+}
+
+
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { BookOpen, Users, LogOut, QrCode, Shield, Clock, BarChart3, Smartphone, CheckCircle, ArrowRight, Star, Users2, Calendar, MapPin } from 'lucide-react';
+import { BookOpen, Users, LogOut, QrCode, Shield, Clock, BarChart3, Smartphone, CheckCircle, ArrowRight, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import LoginForm from './components/LoginForm';
 import ClassManagement from './components/ClassManagement';

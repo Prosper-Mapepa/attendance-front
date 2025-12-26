@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Logo from '../components/Logo';
@@ -107,12 +108,12 @@ export default function PrivacyPolicyPage() {
 
         {/* Footer Navigation */}
         <div className="mt-8 text-center">
-          <a
+          <Link
             href="/"
             className="inline-flex items-center text-[#8B0000] hover:text-[#A00000] font-medium transition-colors"
           >
             ← Back to Home
-          </a>
+          </Link>
         </div>
         </div>
       </div>

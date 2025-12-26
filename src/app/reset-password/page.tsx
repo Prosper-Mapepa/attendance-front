@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle } from 'lucide-react';
 import Logo from '../components/Logo';
 import api from '../lib/api';
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token');
@@ -326,17 +327,36 @@ export default function ResetPasswordPage() {
 
           {/* Back to Login */}
           <div className="mt-6 text-center">
-            <a
+            <Link
               href="/"
               className="text-sm text-[#8B0000] hover:text-[#A00000] font-medium transition-colors inline-flex items-center gap-1"
             >
               <span>←</span>
               <span>Back to Login</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-[#A00000] via-[#8B0000] to-[#6B0000] flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full text-center">
+          <div className="flex justify-center mb-6">
+            <Logo size={80} variant="simple" />
+          </div>
+          <p className="text-white/90">Loading...</p>
+        </div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+
 
