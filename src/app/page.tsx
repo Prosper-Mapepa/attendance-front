@@ -425,6 +425,7 @@ function MobileScreenshotSlider() {
                       priority={index === 0}
                       sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 280px"
                       quality={90}
+                      unoptimized={process.env.NODE_ENV === 'development'}
                     />
                   </div>
                 </div>
