@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { BookOpen, Users, LogOut, QrCode, Shield, Clock, BarChart3, Smartphone, CheckCircle, ArrowRight, Star, Users2, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import LoginForm from './components/LoginForm';
@@ -32,7 +33,7 @@ function LandingPage() {
               </div> */}
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <a
+              <Link
                 href="/signup"
                 className="group relative flex items-center justify-center btn-cmu-primary text-sm sm:text-base px-5 sm:px-6 py-2 sm:py-2.5 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold overflow-hidden"
               >
@@ -41,7 +42,7 @@ function LandingPage() {
                   Get Started
                   <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -74,7 +75,7 @@ function LandingPage() {
               
               {/* CTA Buttons */}
               <div className="flex flex-row justify-between gap-4 pt-2 max-w-xl mx-auto lg:mx-0">
-                <a
+                <Link
                   href="/signup"
                   className="group relative flex items-center justify-center btn-cmu-primary text-base px-8 py-3.5 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex-1 font-semibold overflow-hidden"
                 >
@@ -83,7 +84,7 @@ function LandingPage() {
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </span>
-                </a>
+                </Link>
                 <button 
                   onClick={() => setShowLogin(true)} 
                   className="group flex items-center justify-center btn-cmu-secondary text-base px-8 py-3.5 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex-1 font-semibold"
