@@ -1,9 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
+  ENABLE_COREPACK = "1"
 
 [[redirects]]
   from = "/*"
