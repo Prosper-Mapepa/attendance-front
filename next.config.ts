@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     return config;
   },
   turbopack: {},
+  images: {
+    remotePatterns: [],
+    unoptimized: false,
+  },
 };
 
 export default nextConfig;

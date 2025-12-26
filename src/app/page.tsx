@@ -421,9 +421,10 @@ function MobileScreenshotSlider() {
                       src={`/assets/${screenshot}`}
                       alt={`AttendIQ mobile screenshot ${index + 1}`}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       priority={index === 0}
                       sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 280px"
+                      quality={90}
                     />
                   </div>
                 </div>
