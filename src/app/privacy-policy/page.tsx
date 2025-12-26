@@ -94,7 +94,7 @@ export default function PrivacyPolicyPage() {
           <Section
             title="Contact Us"
             content={[
-              "If you have questions about this Privacy Policy, please contact us at support@attendiq.app",
+              "If you have questions about this Privacy Policy, please contact us at mapepapro@gmail.com",
             ]}
           />
 

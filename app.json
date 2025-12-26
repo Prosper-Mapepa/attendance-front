@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "5e792208-6678-4813-ae6d-e0347287e75d"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.prospermap.attendiq",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}
