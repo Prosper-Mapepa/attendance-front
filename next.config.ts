@@ -8,10 +8,13 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
+  turbopack: {},
   images: {
     remotePatterns: [],
     unoptimized: false,
   },
+  // Explicitly set output for Netlify compatibility
+  output: 'standalone',
 };
 
 export default nextConfig;
