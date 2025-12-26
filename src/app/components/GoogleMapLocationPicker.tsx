@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 
 // Extend Window interface to include google
@@ -231,6 +231,12 @@ export default function GoogleMapLocationPicker({
   const [error, setError] = useState<string>('');
   const [mapInstance, setMapInstance] = useState<any>(null);
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+  const hasAutoLocated = useRef(false);
+
+  const handleLocationSelect = useCallback((lat: number, lng: number) => {
+    setSelectedPosition([lat, lng]);
+    onLocationSelect(lat, lng);
+  }, [onLocationSelect]);
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
@@ -239,9 +245,13 @@ export default function GoogleMapLocationPicker({
   }, []);
 
   useEffect(() => {
+    // Only auto-locate once when modal opens (for new classes)
+    if (hasAutoLocated.current) return;
+    
     const initializeLocation = async () => {
       if (!apiKey) {
         setIsLoading(false);
+        hasAutoLocated.current = true;
         return;
       }
 
@@ -249,55 +259,102 @@ export default function GoogleMapLocationPicker({
         let lat = initialLat;
         let lng = initialLng;
 
-        // If no initial coordinates provided, geocode CMU campus
+        // If no initial coordinates provided, try to get user's current location first
         if (!lat || !lng) {
-          // Check if Google Maps API is fully loaded
-          if (window.google?.maps?.Geocoder) {
+          // Try to get user's precise location automatically
+          if (navigator.geolocation) {
             try {
-              const geocoder = new window.google.maps.Geocoder();
-              const result = await new Promise<any[]>((resolve, reject) => {
-                geocoder.geocode(
-                  { address: 'Central Michigan University, Mount Pleasant, MI' },
-                  (results: any, status: any) => {
-                    if (status === 'OK' && results) {
-                      resolve(results);
-                    } else {
-                      reject(new Error(`Geocoding failed: ${status}`));
-                    }
+              const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                  resolve,
+                  reject,
+                  {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0, // Always get fresh location
                   }
                 );
               });
 
-              if (result.length > 0) {
-                const location = result[0].geometry.location;
-                lat = location.lat();
-                lng = location.lng();
-              } else {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              const accuracy = position.coords.accuracy;
+
+              console.log('Auto-fetched user location:', userLat, userLng, 'Accuracy:', accuracy, 'meters');
+              
+              lat = userLat;
+              lng = userLng;
+              setUserLocation({ lat: userLat, lng: userLng });
+              
+              // Update selected position immediately
+              setSelectedPosition([userLat, userLng]);
+              handleLocationSelect(userLat, userLng);
+              hasAutoLocated.current = true;
+              setIsLoading(false);
+              return; // Exit early since we got the location
+            } catch (geolocationError: any) {
+              console.warn('Auto geolocation failed, falling back to CMU campus:', geolocationError.message);
+              // Fall through to CMU campus geocoding
+            }
+          }
+
+          // If geolocation failed or not available, geocode CMU campus
+          if (!lat || !lng) {
+            // Check if Google Maps API is fully loaded
+            if (window.google?.maps?.Geocoder) {
+              try {
+                const geocoder = new window.google.maps.Geocoder();
+                const result = await new Promise<any[]>((resolve, reject) => {
+                  geocoder.geocode(
+                    { address: 'Central Michigan University, Mount Pleasant, MI' },
+                    (results: any, status: any) => {
+                      if (status === 'OK' && results) {
+                        resolve(results);
+                      } else {
+                        reject(new Error(`Geocoding failed: ${status}`));
+                      }
+                    }
+                  );
+                });
+
+                if (result.length > 0) {
+                  const location = result[0].geometry.location;
+                  lat = location.lat();
+                  lng = location.lng();
+                } else {
+                  // Fallback to approximate CMU coordinates
+                  lat = 43.5842;
+                  lng = -84.7674;
+                }
+              } catch (geocodingError) {
+                console.warn('Geocoding failed, using fallback coordinates:', geocodingError);
                 // Fallback to approximate CMU coordinates
                 lat = 43.5842;
                 lng = -84.7674;
               }
-            } catch (geocodingError) {
-              console.warn('Geocoding failed, using fallback coordinates:', geocodingError);
-              // Fallback to approximate CMU coordinates
+            } else {
+              // Google Maps API not ready, use fallback coordinates
               lat = 43.5842;
               lng = -84.7674;
             }
-          } else {
-            // Google Maps API not ready, use fallback coordinates
-            lat = 43.5842;
-            lng = -84.7674;
           }
         }
 
-        setSelectedPosition([lat || 43.5842, lng || -84.7674]);
+        // Only update if we haven't already set from geolocation
+        if (selectedPosition[0] === 0 && selectedPosition[1] === 0) {
+          setSelectedPosition([lat || 43.5842, lng || -84.7674]);
+        }
         setIsLoading(false);
+        hasAutoLocated.current = true;
       } catch (err) {
         console.error('Error initializing location:', err);
         setError('Failed to load location');
         // Fallback coordinates
-        setSelectedPosition([43.5842, -84.7674]);
+        if (selectedPosition[0] === 0 && selectedPosition[1] === 0) {
+          setSelectedPosition([43.5842, -84.7674]);
+        }
         setIsLoading(false);
+        hasAutoLocated.current = true;
       }
     };
 
@@ -317,6 +374,7 @@ export default function GoogleMapLocationPicker({
         clearInterval(checkGoogle);
         setError('Google Maps API failed to load');
         setIsLoading(false);
+        hasAutoLocated.current = true;
       }, 10000);
 
       return () => {
@@ -325,13 +383,10 @@ export default function GoogleMapLocationPicker({
       };
     } else {
       setIsLoading(false);
+      hasAutoLocated.current = true;
     }
-  }, [apiKey, initialLat, initialLng]);
+  }, [apiKey, initialLat, initialLng, handleLocationSelect]);
 
-  const handleLocationSelect = (lat: number, lng: number) => {
-    setSelectedPosition([lat, lng]);
-    onLocationSelect(lat, lng);
-  };
 
   const handleConfirm = () => {
     onLocationSelect(selectedPosition[0], selectedPosition[1]);
@@ -411,7 +466,14 @@ export default function GoogleMapLocationPicker({
             initialLat={selectedPosition[0]}
             initialLng={selectedPosition[1]}
             onLocationSelect={handleLocationSelect}
-            onMapReady={setMapInstance}
+            onMapReady={(map) => {
+              setMapInstance(map);
+              // Auto-center map on user location if available and no initial coordinates
+              if (userLocation && (!initialLat || !initialLng)) {
+                map.setCenter({ lat: userLocation.lat, lng: userLocation.lng });
+                map.setZoom(20);
+              }
+            }}
           />
         );
       default:

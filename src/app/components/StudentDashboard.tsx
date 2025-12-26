@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, Plus, QrCode, CheckCircle, Trash2 } from 'lucide-react';
+import { BookOpen, Plus, QrCode, CheckCircle, Trash2, LogOut, Clock } from 'lucide-react';
 import api from '../lib/api';
 import Alert from './Alert';
 import { useAutoDismissAlert } from '../hooks/useAutoDismissAlert';
@@ -27,7 +27,13 @@ interface Enrollment {
 interface AttendanceRecord {
   id: string;
   timestamp: string;
+  clockInTime?: string | null;
+  clockOutTime?: string | null;
+  status?: string;
   session: {
+    id: string;
+    otp: string;
+    validUntil: string;
     class: Class;
   };
 }
@@ -40,10 +46,54 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(false);
   const { alert, showAlert, dismissAlert } = useAutoDismissAlert({ timeout: 6000 });
   const [otpInput, setOtpInput] = useState('');
+  
+  // Clock In/Out States
+  const [isClockedIn, setIsClockedIn] = useState(false);
+  const [currentSession, setCurrentSession] = useState<{ otp: string; endTime: Date } | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [canClockOut, setCanClockOut] = useState(false);
+  const [clockingOut, setClockingOut] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Check for active clock in status
+  useEffect(() => {
+    const checkClockInStatus = () => {
+      const clockedInRecord = attendanceRecords.find(
+        record => record.status === 'CLOCKED_IN' || 
+        (record.clockInTime && !record.clockOutTime && new Date(record.session.validUntil) > new Date())
+      );
+      
+      if (clockedInRecord) {
+        setIsClockedIn(true);
+        setCurrentSession({
+          otp: clockedInRecord.session.otp,
+          endTime: new Date(clockedInRecord.session.validUntil)
+        });
+      } else {
+        setIsClockedIn(false);
+        setCurrentSession(null);
+      }
+    };
+
+    checkClockInStatus();
+  }, [attendanceRecords]);
+
+  // Timer for clock out countdown
+  useEffect(() => {
+    if (!isClockedIn || !currentSession) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const remaining = Math.max(0, currentSession.endTime.getTime() - now.getTime());
+      setTimeRemaining(remaining);
+      setCanClockOut(remaining === 0);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isClockedIn, currentSession]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -111,10 +161,26 @@ export default function StudentDashboard() {
         screenResolution: `${screen.width}x${screen.height}`
       };
 
-      await api.post('/attendance/mark', attendanceData);
+      const response = await api.post('/attendance/mark', attendanceData);
+      const responseData = response.data;
+      
+      const currentOtp = otpInput; // Save OTP before clearing
       setOtpInput('');
       fetchData(); // Refresh data
-      showAlert('Attendance marked successfully!', 'success');
+      
+      // Handle clock in response
+      if (responseData.isClockedIn) {
+        setIsClockedIn(true);
+        if (responseData.sessionEndTime) {
+          setCurrentSession({
+            otp: currentOtp,
+            endTime: new Date(responseData.sessionEndTime)
+          });
+        }
+        showAlert('Clock in successful! Please wait for class to end before clocking out.', 'success');
+      } else {
+        showAlert('Attendance marked successfully!', 'success');
+      }
     } catch (err: unknown) {
       if (err instanceof GeolocationPositionError) {
         showAlert('Location permission required. Please enable location services to mark attendance.', 'error');
@@ -134,6 +200,56 @@ export default function StudentDashboard() {
     }
   };
 
+  const handleClockOut = async () => {
+    if (!canClockOut || !currentSession) {
+      showAlert('Please wait for class to end before clocking out', 'warning');
+      return;
+    }
+
+    setClockingOut(true);
+    try {
+      // Get current location
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      });
+
+      const clockOutData = {
+        otp: currentSession.otp,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+
+      const response = await api.post('/attendance/clock-out', clockOutData);
+      showAlert(`Clock out successful! You attended for ${response.data.timeElapsed} minutes.`, 'success');
+      
+      // Reset states
+      setIsClockedIn(false);
+      setCurrentSession(null);
+      setTimeRemaining(0);
+      setCanClockOut(false);
+      fetchData(); // Refresh data
+    } catch (err: unknown) {
+      if (err instanceof GeolocationPositionError) {
+        showAlert('Location permission required. Please enable location services to clock out.', 'error');
+      } else {
+        const error = err as { response?: { data?: { message?: string } } };
+        showAlert(error.response?.data?.message || 'Failed to clock out', 'error');
+      }
+    } finally {
+      setClockingOut(false);
+    }
+  };
+
+  const formatTimeRemaining = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   if (loading) {
     return (
@@ -266,50 +382,101 @@ export default function StudentDashboard() {
       {/* Mark Attendance Tab */}
       {activeTab === 'attendance' && (
         <div className="space-y-6">
-          {/* OTP Input */}
-          <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Mark Attendance</h3>
-            </div>
-            <div className="p-6">
-              <div className="max-w-md mx-auto">
-                <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
-                  Enter OTP from QR Code
-                </label>
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    id="otp"
-                    value={otpInput}
-                    onChange={(e) => setOtpInput(e.target.value)}
-                    placeholder="Enter 6-digit OTP"
-                    className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent"
-                  />
+          {isClockedIn ? (
+            /* Clock In Status */
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                  <Clock className="h-5 w-5 mr-2 text-yellow-600" />
+                  You are Clocked In
+                </h3>
+              </div>
+              <div className="p-6">
+                <div className="max-w-md mx-auto text-center">
+                  <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-sm font-medium text-yellow-900 mb-2">
+                      {timeRemaining > 0 
+                        ? `Time remaining: ${formatTimeRemaining(timeRemaining)}`
+                        : 'Class has ended. You can clock out now.'
+                      }
+                    </p>
+                  </div>
+                  
                   <button
-                    onClick={markAttendance}
-                    className="btn-cmu-primary flex items-center space-x-2"
+                    onClick={handleClockOut}
+                    disabled={!canClockOut || clockingOut}
+                    className={`w-full py-3 px-4 rounded-md font-medium flex items-center justify-center space-x-2 ${
+                      canClockOut && !clockingOut
+                        ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
                   >
-                    <CheckCircle className="h-4 w-4" />
-                    <span>Mark</span>
+                    {clockingOut ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Clocking Out...</span>
+                      </>
+                    ) : (
+                      <>
+                        <LogOut className="h-4 w-4" />
+                        <span>Clock Out</span>
+                      </>
+                    )}
                   </button>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Scan the QR code displayed by your teacher to get the OTP.
-                </p>
-                
-                {/* Location Requirements Info */}
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="text-sm font-medium text-blue-900 mb-2">📍 Location Requirements</h4>
-                  <ul className="text-xs text-blue-800 space-y-1">
-                    <li>• You must be physically present in the classroom</li>
-                    <li>• Location services must be enabled in your browser</li>
-                    <li>• You must be within 50 meters of the class location</li>
-                    <li>• If you&apos;re in the correct room but get an error, ask your teacher to check the class location settings</li>
-                  </ul>
+                  
+                  <p className="text-xs text-gray-500 mt-4">
+                    You must wait for class to end before clocking out.
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            /* Clock In Form */
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900">Clock In</h3>
+              </div>
+              <div className="p-6">
+                <div className="max-w-md mx-auto">
+                  <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
+                    Enter OTP from QR Code
+                  </label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      id="otp"
+                      value={otpInput}
+                      onChange={(e) => setOtpInput(e.target.value)}
+                      placeholder="Enter 6-digit OTP"
+                      className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent"
+                    />
+                    <button
+                      onClick={markAttendance}
+                      disabled={loading}
+                      className="btn-cmu-primary flex items-center space-x-2"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      <span>Clock In</span>
+                    </button>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Scan the QR code displayed by your teacher to get the OTP.
+                  </p>
+                  
+                  {/* Location Requirements Info */}
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h4 className="text-sm font-medium text-blue-900 mb-2">📍 Location Requirements</h4>
+                    <ul className="text-xs text-blue-800 space-y-1">
+                      <li>• You must be physically present in the classroom</li>
+                      <li>• Location services must be enabled in your browser</li>
+                      <li>• You must be within 50 meters of the class location</li>
+                      <li>• You must wait for class to end before clocking out</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -330,6 +497,12 @@ export default function StudentDashboard() {
                     Date & Time
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Clock In
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Clock Out
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
                 </tr>
@@ -337,36 +510,58 @@ export default function StudentDashboard() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {attendanceRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="px-6 py-4 text-center text-gray-500">
+                    <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                       No attendance records found.
                     </td>
                   </tr>
                 ) : (
-                  attendanceRecords.map((record) => (
-                    <tr key={record.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {record.session.class.name}
-                          </div>
-                          {record.session.class.subject && (
-                            <div className="text-sm text-gray-500">
-                              {record.session.class.subject}
+                  attendanceRecords.map((record) => {
+                    const clockInTime = record.clockInTime ? new Date(record.clockInTime) : new Date(record.timestamp);
+                    const clockOutTime = record.clockOutTime ? new Date(record.clockOutTime) : null;
+                    const status = record.status || (clockOutTime ? 'COMPLETED' : 'CLOCKED_IN');
+                    
+                    return (
+                      <tr key={record.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {record.session.class.name}
                             </div>
+                            {record.session.class.subject && (
+                              <div className="text-sm text-gray-500">
+                                {record.session.class.subject}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {clockInTime.toLocaleString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {clockOutTime ? clockOutTime.toLocaleString() : (
+                            <span className="text-gray-400">—</span>
                           )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {new Date(record.timestamp).toLocaleString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Present
-                        </span>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {status === 'COMPLETED' ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Completed
+                            </span>
+                          ) : status === 'CLOCKED_IN' ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                              <Clock className="h-3 w-3 mr-1" />
+                              Clocked In
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              {status}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>

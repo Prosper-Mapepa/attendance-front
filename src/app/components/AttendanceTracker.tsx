@@ -12,7 +12,8 @@ import { useAutoDismissAlert } from '../hooks/useAutoDismissAlert';
 
 const sessionSchema = z.object({
   classId: z.string().min(1, 'Please select a class'),
-  duration: z.number().min(5).max(120),
+  duration: z.number().min(1).max(30),
+  classDuration: z.number().min(15).max(240),
 });
 
 type SessionFormData = z.infer<typeof sessionSchema>;
@@ -28,6 +29,8 @@ interface Session {
   id: string;
   otp: string;
   validUntil: string;
+  clockInDeadline?: string;
+  classDuration?: number;
   createdAt: string;
   class: Class;
 }
@@ -49,6 +52,8 @@ interface SessionAttendance {
     id: string;
     otp: string;
     validUntil: string;
+    clockInDeadline?: string;
+    classDuration?: number;
     createdAt: string;
     class: {
       id: string;
@@ -59,9 +64,24 @@ interface SessionAttendance {
   attendanceRecords: AttendanceRecord[];
   summary: {
     totalAttended: number;
+    clockedInCount?: number;
+    completedCount?: number;
     sessionCreated: string;
     sessionValidUntil: string;
+    clockInDeadline?: string;
   };
+}
+
+interface SessionStats {
+  sessionId: string;
+  clockedInCount: number;
+  completedCount: number;
+  totalCount: number;
+  clockInDeadline: string;
+  clockInDeadlinePassed: boolean;
+  classDuration: number;
+  createdAt: string;
+  validUntil: string;
 }
 
 export default function AttendanceTracker() {
@@ -77,6 +97,8 @@ export default function AttendanceTracker() {
   const { alert, showAlert, dismissAlert } = useAutoDismissAlert({ timeout: 6000 });
   const [, setSelectedSession] = useState<string>('');
   const [sessionAttendance, setSessionAttendance] = useState<SessionAttendance | null>(null);
+  const [sessionStats, setSessionStats] = useState<Record<string, SessionStats>>({});
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
 
   const form = useForm<SessionFormData>({
     resolver: zodResolver(sessionSchema),
@@ -125,10 +147,12 @@ export default function AttendanceTracker() {
       const response = await api.post('/sessions', {
         classId: data.classId,
         duration: data.duration,
+        classDuration: data.classDuration,
       });
       
       const newSession = response.data;
       setSessions(prev => [newSession, ...prev]);
+      setActiveSessionId(newSession.id);
       form.reset();
       
       // Generate QR code for the new session
@@ -143,6 +167,9 @@ export default function AttendanceTracker() {
       setCurrentSessionOTP(newSession.otp);
       setShowQR(true);
       showAlert('Session created successfully! QR code is ready.', 'success');
+      
+      // Start fetching stats for this session
+      fetchSessionStats(newSession.id);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
       showAlert(error.response?.data?.message || 'Failed to create session', 'error');
@@ -182,6 +209,54 @@ export default function AttendanceTracker() {
       const error = err as { response?: { data?: { message?: string } } };
       showAlert(error.response?.data?.message || 'Failed to fetch session attendance', 'error');
     }
+  };
+
+  const fetchSessionStats = async (sessionId: string) => {
+    try {
+      const response = await api.get(`/attendance/session/${sessionId}/stats`);
+      setSessionStats(prev => ({
+        ...prev,
+        [sessionId]: response.data,
+      }));
+    } catch (err: unknown) {
+      // Silently fail for stats - don't show error to user
+      console.error('Failed to fetch session stats:', err);
+    }
+  };
+
+  // Auto-refresh stats for active sessions
+  useEffect(() => {
+    if (!activeSessionId) return;
+
+    const interval = setInterval(() => {
+      fetchSessionStats(activeSessionId);
+    }, 3000); // Refresh every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [activeSessionId]);
+
+  // Check for active sessions on mount and set active session
+  useEffect(() => {
+    const now = new Date();
+    const activeSession = sessions.find(session => {
+      const deadline = session.clockInDeadline ? new Date(session.clockInDeadline) : null;
+      return deadline && now < deadline;
+    });
+    
+    if (activeSession) {
+      setActiveSessionId(activeSession.id);
+      fetchSessionStats(activeSession.id);
+    }
+  }, [sessions]);
+
+  const formatTimeRemaining = (deadline: string) => {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const remaining = Math.max(0, deadlineDate.getTime() - now.getTime());
+    const totalSeconds = Math.floor(remaining / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
   const filteredSessions = selectedClass 
@@ -237,7 +312,7 @@ export default function AttendanceTracker() {
       <div className="bg-white p-6 rounded-lg shadow">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Create Attendance Session</h3>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Class</label>
               <select
@@ -256,17 +331,33 @@ export default function AttendanceTracker() {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Duration (minutes)</label>
+              <label className="block text-sm font-medium text-gray-700">OTP Duration / Clock-In Deadline (minutes)</label>
               <input
                 {...form.register('duration', { valueAsNumber: true })}
                 type="number"
-                min="5"
-                max="120"
-                defaultValue="15"
+                min="1"
+                max="30"
+                defaultValue="10"
                 className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-cmu-maroon focus:border-cmu-maroon"
               />
+              <p className="mt-1 text-xs text-gray-500">Students must clock in within this time. OTP expires after this. (1-30 min)</p>
               {form.formState.errors.duration && (
                 <p className="mt-1 text-sm text-red-600">{form.formState.errors.duration.message}</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Class Duration (minutes)</label>
+              <input
+                {...form.register('classDuration', { valueAsNumber: true })}
+                type="number"
+                min="15"
+                max="240"
+                defaultValue="90"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-cmu-maroon focus:border-cmu-maroon"
+              />
+              <p className="mt-1 text-xs text-gray-500">Total class duration (15-240 min)</p>
+              {form.formState.errors.classDuration && (
+                <p className="mt-1 text-sm text-red-600">{form.formState.errors.classDuration.message}</p>
               )}
             </div>
           </div>
@@ -444,67 +535,146 @@ export default function AttendanceTracker() {
       )}
 
       {/* Active Sessions */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Active Sessions</h3>
+      <div className="bg-white rounded-lg shadow border border-gray-200">
+        <div className="px-5 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">Active Sessions</h3>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="p-5 space-y-3">
           {filteredSessions.map((session) => {
             const isValid = new Date(session.validUntil) > new Date();
+            const stats = sessionStats[session.id];
+            const clockInDeadline = session.clockInDeadline ? new Date(session.clockInDeadline) : null;
+            const clockInDeadlinePassed = clockInDeadline ? new Date() > clockInDeadline : false;
+            const isActive = clockInDeadline && !clockInDeadlinePassed;
+            
+            // Auto-fetch stats for active sessions
+            if (isActive && !stats) {
+              fetchSessionStats(session.id);
+            }
+            
             return (
-              <div key={session.id} className={`p-6 ${!isValid ? 'bg-gray-50 border-l-4 border-gray-400' : ''}`}>
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <h4 className={`text-lg font-medium ${isValid ? 'text-gray-900' : 'text-gray-600'}`}>
-                        {session.class.name}
-                      </h4>
-                      <span className={`text-sm ${isValid ? 'text-gray-500' : 'text-gray-400'}`}>
-                        ({session.class.subject})
-                      </span>
-                      {isValid ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      )}
-                    </div>
-                    <p className={`text-sm mt-1 ${isValid ? 'text-gray-600' : 'text-gray-500'}`}>
-                      OTP: <span className={`font-mono font-semibold ${isValid ? '' : 'text-gray-400'}`}>
-                        {session.otp}
-                      </span>
-                    </p>
-                    <p className={`text-sm mt-1 ${isValid ? 'text-gray-500' : 'text-red-900'}`}>
-                      Valid until: {new Date(session.validUntil).toLocaleString()}
-                      {!isValid && <span className="ml-2 text-xs font-medium">(EXPIRED)</span>}
-                    </p>
-                  </div>
-                  <div className="flex space-x-3">
-                    {isValid ? (
-                      <button
-                        onClick={() => generateQRCode(session)}
-                        className="flex items-center space-x-2 px-4 py-2 bg-cmu-maroon text-white hover:bg-cmu-maroon-dark rounded-lg transition-all duration-200 shadow-sm font-medium"
-                        title="Generate QR Code for this session"
-                      >
-                        <QrCode className="h-4 w-4" />
-                        <span>Show QR</span>
-                      </button>
-                    ) : (
-                      <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed">
-                        <QrCode className="h-4 w-4" />
-                        <span>Session Expired</span>
+              <div 
+                key={session.id} 
+                className={`rounded-lg border transition-all ${
+                  !isValid 
+                    ? 'bg-gray-50 border-gray-200' 
+                    : isActive 
+                      ? 'bg-white border-cmu-maroon border-2 shadow-md' 
+                      : 'bg-white border-gray-200'
+                }`}
+              >
+                <div className="p-5">
+                  {/* Header Section */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-3">
+                        <h4 className={`text-lg font-semibold ${isValid ? 'text-gray-900' : 'text-gray-500'}`}>
+                          {session.class.name}
+                        </h4>
+                        {isActive && (
+                          <span className="px-2 py-0.5 bg-cmu-maroon text-white text-xs font-medium rounded">
+                            ACTIVE
+                          </span>
+                        )}
+                        {!isValid && (
+                          <span className="px-2 py-0.5 bg-gray-300 text-gray-600 text-xs font-medium rounded">
+                            EXPIRED
+                          </span>
+                        )}
                       </div>
-                    )}
-                    <button
-                      onClick={() => {
-                        setSelectedSession(session.id);
-                        fetchSessionAttendance(session.id);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2 bg-cmu-gold text-cmu-maroon hover:bg-cmu-gold-dark hover:text-white rounded-lg transition-all duration-200 shadow-sm font-medium"
-                      title="View attendance records for this session"
-                    >
-                      <Users className="h-4 w-4" />
-                      <span>View Attendance</span>
-                    </button>
+                      {session.class.subject && (
+                        <p className={`text-sm mb-3 ${isValid ? 'text-gray-600' : 'text-gray-400'}`}>
+                          {session.class.subject}
+                        </p>
+                      )}
+                      
+                      {/* OTP Display */}
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded">
+                        <span className="text-xs font-medium text-gray-600">OTP:</span>
+                        <span className={`text-base font-mono font-semibold ${isValid ? 'text-cmu-maroon' : 'text-gray-400'}`}>
+                          {session.otp}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 ml-4">
+                      {isValid ? (
+                        <button
+                          onClick={() => generateQRCode(session)}
+                          className="flex items-center gap-2 px-4 py-2 bg-cmu-maroon text-white hover:bg-cmu-maroon-dark rounded transition-colors text-sm font-medium"
+                          title="Generate QR Code for this session"
+                        >
+                          <QrCode className="h-4 w-4" />
+                          <span>Show QR</span>
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-400 rounded cursor-not-allowed text-sm font-medium">
+                          <QrCode className="h-4 w-4" />
+                          <span>Expired</span>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => {
+                          setSelectedSession(session.id);
+                          fetchSessionAttendance(session.id);
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 bg-cmu-gold text-cmu-maroon hover:bg-cmu-gold-dark hover:text-white rounded transition-colors text-sm font-medium"
+                        title="View attendance records for this session"
+                      >
+                        <Users className="h-4 w-4" />
+                        <span>View</span>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Real-time Stats */}
+                  {stats && (
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="bg-gray-50 p-3 rounded border border-gray-200">
+                        <p className="text-xs font-medium text-gray-600 mb-1">Clocked In</p>
+                        <p className="text-2xl font-bold text-cmu-maroon">{stats.clockedInCount}</p>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded border border-gray-200">
+                        <p className="text-xs font-medium text-gray-600 mb-1">Completed</p>
+                        <p className="text-2xl font-bold text-cmu-maroon">{stats.completedCount}</p>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded border border-gray-200">
+                        <p className="text-xs font-medium text-gray-600 mb-1">Total</p>
+                        <p className="text-2xl font-bold text-gray-700">{stats.totalCount}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Clock-In Deadline Countdown */}
+                  {clockInDeadline && (
+                    <div className={`p-3 rounded border ${
+                      !clockInDeadlinePassed 
+                        ? 'bg-cmu-gold bg-opacity-10 border-cmu-gold' 
+                        : 'bg-gray-100 border-gray-300'
+                    }`}>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-medium ${!clockInDeadlinePassed ? 'text-cmu-maroon' : 'text-gray-600'}`}>
+                          Clock-In Deadline
+                        </span>
+                        {!clockInDeadlinePassed ? (
+                          <span className="text-lg font-bold text-cmu-maroon font-mono">
+                            {formatTimeRemaining(session.clockInDeadline!)}
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 bg-gray-300 text-gray-700 text-xs font-medium rounded">
+                            CLOSED
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Session Info Footer */}
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <p className="text-xs text-gray-500">
+                      Valid until: {new Date(session.validUntil).toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Eye, EyeOff, User, Mail, Lock, ArrowLeft } from 'lucide-react';
-import Logo from './Logo';
+import Logo from './LogoAuth';
 import { useAuth } from '../contexts/AuthContext';
 
 const loginSchema = z.object({
@@ -73,218 +73,216 @@ export default function LoginForm({ onBack }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-opacity-50">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md mx-auto">
         {onBack && (
-          <div className="mb-4">
+          <div className="mb-8 sm:mb-12">
             <button
               onClick={onBack}
-              className="flex items-center text-cmu-maroon hover:text-cmu-maroon-dark transition-colors"
+              className="flex items-center text-gray-600 hover:text-cmu-maroon-dark transition-colors font-normal text-sm sm:text-base"
             >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Home
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              Home
             </button>
           </div>
         )}
-        <div className="flex justify-center">
-          <Logo size={80} variant="color" showText={false} />
+        <div className="flex flex-col items-center mb-6 sm:mb-8 ">
+          <div className="mb-3 sm:mb-4">
+            <Logo size={80} variant="simple" showText={false} className="w-20 h-20 sm:w-28 sm:h-28 md:ml-8" />
+          </div>
+          <p className="text-center text-base sm:text-lg text-gray-600 font-medium px-4 ">
+            {isLogin ? 'Sign in to your account' : 'Create your account'}
+          </p>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-cmu-maroon">
-        AttendIQ
-        </h2>
-        <p className="mt-2 text-center text-lg font-medium text-gray-700">
-          {isLogin ? 'Sign in to your account' : 'Create your account'}
-        </p>
-    
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div className="w-full max-w-md mx-auto">
+        <div className="bg-white py-8 sm:py-10 px-5 sm:px-6 lg:px-10 shadow-md rounded-xl sm:rounded-2xl border border-gray-200/60">
           {error && (
-            <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
-              {error}
+            <div className="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-r">
+              <p className="text-sm font-medium">{error}</p>
             </div>
           )}
 
           {isLogin ? (
-            <form className="space-y-6" onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
+            <form className="space-y-4 sm:space-y-5" onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Email address
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...loginForm.register('email')}
                     type="email"
                     autoComplete="email"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Enter your email"
                   />
                 </div>
                 {loginForm.formState.errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{loginForm.formState.errors.email.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{loginForm.formState.errors.email.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Password
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...loginForm.register('password')}
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
-                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Enter your password"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-400 hover:text-gray-500"
+                      className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5" />}
                     </button>
                   </div>
                 </div>
                 {loginForm.formState.errors.password && (
-                  <p className="mt-1 text-sm text-red-600">{loginForm.formState.errors.password.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{loginForm.formState.errors.password.message}</p>
                 )}
               </div>
 
-              <div>
+              <div className="pt-1 sm:pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-cmu-primary w-full flex justify-center py-3 px-4 text-sm font-medium disabled:opacity-50"
+                  className="btn-cmu-primary w-full flex justify-center py-2.5 sm:py-3 px-4 text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all"
                 >
                   {loading ? 'Signing in...' : 'Sign in'}
                 </button>
               </div>
             </form>
           ) : (
-            <form className="space-y-6" onSubmit={registerForm.handleSubmit(onRegisterSubmit)}>
+            <form className="space-y-4 sm:space-y-5" onSubmit={registerForm.handleSubmit(onRegisterSubmit)}>
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Full Name
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...registerForm.register('name')}
                     type="text"
                     autoComplete="name"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Enter your full name"
                   />
                 </div>
                 {registerForm.formState.errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{registerForm.formState.errors.name.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{registerForm.formState.errors.name.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Email address
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...registerForm.register('email')}
                     type="email"
                     autoComplete="email"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Enter your email"
                   />
                 </div>
                 {registerForm.formState.errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{registerForm.formState.errors.email.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{registerForm.formState.errors.email.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Role
                 </label>
                 <select
                   {...registerForm.register('role')}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  className="block w-full pl-3 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent transition-all bg-white"
                 >
-                  <option value="TEACHER">Teacher</option>
+                  <option value="TEACHER">Instructor</option>
                   <option value="STUDENT">Student</option>
                 </select>
                 {registerForm.formState.errors.role && (
-                  <p className="mt-1 text-sm text-red-600">{registerForm.formState.errors.role.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{registerForm.formState.errors.role.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Password
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...registerForm.register('password')}
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Enter your password"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-400 hover:text-gray-500"
+                      className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5" />}
                     </button>
                   </div>
                 </div>
                 {registerForm.formState.errors.password && (
-                  <p className="mt-1 text-sm text-red-600">{registerForm.formState.errors.password.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{registerForm.formState.errors.password.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Confirm Password
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </div>
                   <input
                     {...registerForm.register('confirmPassword')}
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full pl-9 sm:pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-transparent text-sm sm:text-base transition-all bg-white"
                     placeholder="Confirm your password"
                   />
                 </div>
                 {registerForm.formState.errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">{registerForm.formState.errors.confirmPassword.message}</p>
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-600">{registerForm.formState.errors.confirmPassword.message}</p>
                 )}
               </div>
 
-              <div>
+              <div className="pt-1 sm:pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-cmu-primary w-full flex justify-center py-3 px-4 text-sm font-medium disabled:opacity-50"
+                  className="btn-cmu-primary w-full flex justify-center py-2.5 sm:py-3 px-4 text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all"
                 >
                   {loading ? 'Creating account...' : 'Create account'}
                 </button>
@@ -292,9 +290,10 @@ export default function LoginForm({ onBack }: LoginFormProps) {
             </form>
           )}
         </div>
-        
       </div>
-      <p className="mt-10 text-center text-sm text-gray-600">
+      
+      <div className="mt-6 sm:mt-8 text-center px-4">
+        <p className="text-sm sm:text-sm text-gray-600">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <button
             type="button"
@@ -304,11 +303,12 @@ export default function LoginForm({ onBack }: LoginFormProps) {
               loginForm.reset();
               registerForm.reset();
             }}
-            className="font-medium text-cmu-maroon hover:text-cmu-maroon-dark"
+            className="font-semibold text-cmu-maroon hover:text-cmu-maroon-dark transition-colors underline-offset-2 hover:underline"
           >
             {isLogin ? 'Sign up' : 'Sign in'}
           </button>
         </p>
+      </div>
     </div>
   );
 }
