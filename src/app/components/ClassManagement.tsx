@@ -290,13 +290,13 @@ export default function ClassManagement() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h2 className="text-3xl font-bold text-cmu-maroon">Classes</h2>
-          <p className="text-gray-600 mt-1">Manage your courses and track attendance</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-cmu-maroon">Classes</h2>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your courses and track attendance</p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:space-x-3">
           <button
             onClick={() => {
               setShowFlaggedStudents(!showFlaggedStudents);
@@ -304,23 +304,23 @@ export default function ClassManagement() {
                 fetchFlaggedStudents();
               }
             }}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`flex items-center justify-center sm:justify-start space-x-2 px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base ${
               showFlaggedStudents 
                 ? 'bg-red-100 text-red-700 border border-red-300' 
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <AlertTriangle className="h-4 w-4" />
-            <span>Flagged Students</span>
+            <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+            <span className="truncate">Flagged Students</span>
             {flaggedStudents.length > 0 && (
-              <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+              <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
                 {flaggedStudents.length}
               </span>
             )}
           </button>
           <button
             onClick={() => setShowForm(true)}
-            className="btn-cmu-primary flex items-center space-x-2"
+            className="btn-cmu-primary flex items-center justify-center space-x-2 text-sm sm:text-base"
           >
             <Plus className="h-4 w-4" />
             <span>Add Class</span>
@@ -463,12 +463,12 @@ export default function ClassManagement() {
       )}
 
       {showForm && (
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+          <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
             {editingClass ? 'Edit Class' : 'Create New Class'}
           </h3>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Class Name</label>
                 <input
@@ -566,9 +566,9 @@ export default function ClassManagement() {
 
               {/* Location Picker Modal */}
               {showLocationPicker && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                  <div className="bg-white p-6 rounded-lg max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Select CMU Building & Room</h3>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+                  <div className="bg-white p-4 sm:p-6 rounded-lg max-w-2xl w-full mx-2 sm:mx-4 max-h-[90vh] sm:max-h-96 overflow-y-auto">
+                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">Select CMU Building & Room</h3>
                     
                     {/* Building Selection */}
                     <div className="mb-4">
@@ -595,7 +595,7 @@ export default function ClassManagement() {
                     {selectedBuilding && (
                       <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Room (Optional)</label>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {CMU_BUILDINGS[selectedBuilding].rooms.map((roomName) => (
                             <button
                               key={roomName}
@@ -626,16 +626,16 @@ export default function ClassManagement() {
                       </div>
                     )}
 
-                    <div className="flex justify-end space-x-3">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3">
                       <button
                         onClick={() => setShowLocationPicker(false)}
-                        className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                        className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-sm sm:text-base"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={() => setShowLocationPicker(false)}
-                        className="px-4 py-2 bg-cmu-maroon text-white rounded-md hover:bg-cmu-maroon-dark"
+                        className="w-full sm:w-auto px-4 py-2 bg-cmu-maroon text-white rounded-md hover:bg-cmu-maroon-dark text-sm sm:text-base"
                       >
                         Confirm Location
                       </button>
@@ -655,7 +655,7 @@ export default function ClassManagement() {
               )}
 
               {/* Manual Coordinate Entry */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Latitude</label>
                   <input
@@ -705,17 +705,17 @@ export default function ClassManagement() {
                 </ul>
               </div>
             </div>
-            <div className="flex justify-end space-x-3">
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3">
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="btn-cmu-primary"
+                className="w-full sm:w-auto btn-cmu-primary text-sm sm:text-base"
               >
                 {editingClass ? 'Update Class' : 'Create Class'}
               </button>
@@ -724,9 +724,9 @@ export default function ClassManagement() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {classes.map((classItem) => (
-          <div key={classItem.id} className="card-cmu p-6 flex flex-col">
+          <div key={classItem.id} className="card-cmu p-4 sm:p-6 flex flex-col">
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-900">{classItem.name}</h3>
               <p className="text-sm text-gray-600 mt-1">{classItem.subject}</p>
@@ -757,40 +757,40 @@ export default function ClassManagement() {
             </div>
             
             {/* Action Buttons at Bottom */}
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="flex justify-center space-x-3">
+            <div className="mt-4 sm:mt-6 pt-4 border-t border-gray-200">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedClassId(classItem.id);
                   }}
-                  className="flex items-center space-x-2 px-4 py-2 text-cmu-maroon hover:bg-cmu-maroon hover:text-white rounded-lg transition-all duration-200 shadow-sm border border-cmu-maroon"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 text-cmu-maroon hover:bg-cmu-maroon hover:text-white rounded-lg transition-all duration-200 shadow-sm border border-cmu-maroon text-xs sm:text-sm"
                   title="View Details"
                 >
-                  <Eye className="h-4 w-4 hover:text-white" />
-                  <span className="text-sm font-medium hover:text-white">View</span>
+                  <Eye className="h-3 w-3 sm:h-4 sm:w-4 hover:text-white" />
+                  <span className="font-medium hover:text-white">View</span>
                 </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleEdit(classItem);
                   }}
-                  className="flex items-center space-x-2 px-4 py-2 text-cmu-gold-dark hover:bg-cmu-gold hover:text-cmu-maroon rounded-lg transition-all duration-200 shadow-sm border border-cmu-gold-dark"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 text-cmu-gold-dark hover:bg-cmu-gold hover:text-cmu-maroon rounded-lg transition-all duration-200 shadow-sm border border-cmu-gold-dark text-xs sm:text-sm"
                   title="Edit Class"
                 >
-                  <Edit className="h-4 w-4" />
-                  <span className="text-sm font-medium">Edit</span>
+                  <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="font-medium">Edit</span>
                 </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete(classItem.id);
                   }}
-                  className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all duration-200 shadow-sm border border-red-600"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all duration-200 shadow-sm border border-red-600 text-xs sm:text-sm"
                   title="Delete Class"
                 >
-                  <Trash2 className="h-4 w-4" />
-                  <span className="text-sm font-medium">Delete</span>
+                  <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="font-medium">Delete</span>
                 </button>
               </div>
             </div>

@@ -13,7 +13,9 @@ import { useAutoDismissAlert } from '../hooks/useAutoDismissAlert';
 const sessionSchema = z.object({
   classId: z.string().min(1, 'Please select a class'),
   duration: z.number().min(1).max(30),
-  classDuration: z.number().min(15).max(240),
+  classDuration: z.number().refine((val) => val > 0, {
+    message: 'Class duration must be greater than 0',
+  }),
 });
 
 type SessionFormData = z.infer<typeof sessionSchema>;
@@ -278,17 +280,17 @@ export default function AttendanceTracker() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h2 className="text-3xl font-bold text-cmu-maroon">Attendance Tracker</h2>
-          <p className="text-gray-600 mt-1">Create sessions and monitor student attendance</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-cmu-maroon">Attendance Tracker</h2>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Create sessions and monitor student attendance</p>
         </div>
         <div className="flex space-x-4">
           <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-cmu-maroon focus:border-cmu-maroon"
+            className="w-full sm:w-auto border border-gray-300 rounded-md px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-cmu-maroon focus:border-cmu-maroon"
           >
             <option value="">All Classes</option>
             {classes.map((classItem) => (
@@ -309,10 +311,10 @@ export default function AttendanceTracker() {
       )}
 
       {/* Create Session Form */}
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Create Attendance Session</h3>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">Create Attendance Session</h3>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Class</label>
               <select
@@ -350,12 +352,12 @@ export default function AttendanceTracker() {
               <input
                 {...form.register('classDuration', { valueAsNumber: true })}
                 type="number"
-                min="15"
-                max="240"
+                min="0.01"
+                step="any"
                 defaultValue="90"
                 className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-cmu-maroon focus:border-cmu-maroon"
               />
-              <p className="mt-1 text-xs text-gray-500">Total class duration (15-240 min)</p>
+              <p className="mt-1 text-xs text-gray-500">Total class duration (must be greater than 0)</p>
               {form.formState.errors.classDuration && (
                 <p className="mt-1 text-sm text-red-600">{form.formState.errors.classDuration.message}</p>
               )}
@@ -373,20 +375,24 @@ export default function AttendanceTracker() {
 
       {/* QR Code Modal */}
       {showQR && qrCodeData && (
-        <div className="fixed inset-0 bg-gradient-to-br from-cmu-maroon-dark via-cmu-maroon to-cmu-gold-dark bg-opacity-90 flex items-center justify-center z-50">
-          <div className="bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark p-6 rounded-lg max-w-md w-full mx-4 shadow-2xl">
-            <h3 className="text-lg font-medium text-white mb-4 text-center">Attendance QR Code</h3>
+        <div className="fixed inset-0 bg-gradient-to-br from-cmu-maroon-dark via-cmu-maroon to-cmu-gold-dark bg-opacity-90 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark p-4 sm:p-6 rounded-lg max-w-md w-full mx-2 sm:mx-4 shadow-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <h3 className="text-base sm:text-lg font-medium text-white mb-3 sm:mb-4 text-center">Attendance QR Code</h3>
             <div className="text-center">
-              <div className="bg-white p-4 rounded-lg mb-4">
-                <img src={qrCodeData} alt="QR Code" className="mx-auto" />
+              <div className="bg-white p-2 sm:p-3 md:p-4 rounded-lg mb-3 sm:mb-4 flex justify-center">
+                <img 
+                  src={qrCodeData} 
+                  alt="QR Code" 
+                  className="mx-auto max-w-full h-auto w-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px]" 
+                />
               </div>
               
               {/* OTP Display */}
               {currentSessionOTP && (
-                <div className="bg-white bg-opacity-20 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-cmu-gold-light mb-2">Manual OTP Entry:</p>
-                  <div className="bg-white rounded-lg p-3">
-                    <span className="text-2xl font-mono font-bold text-cmu-maroon tracking-wider">
+                <div className="bg-white bg-opacity-20 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
+                  <p className="text-xs sm:text-sm text-cmu-gold-light mb-2">Manual OTP Entry:</p>
+                  <div className="bg-white rounded-lg p-2 sm:p-3">
+                    <span className="text-xl sm:text-2xl md:text-3xl font-mono font-bold text-cmu-maroon tracking-wider break-all">
                       {currentSessionOTP}
                     </span>
                   </div>
@@ -396,12 +402,12 @@ export default function AttendanceTracker() {
                 </div>
               )}
               
-              <p className="text-sm text-cmu-gold-light mb-4">
+              <p className="text-xs sm:text-sm text-cmu-gold-light mb-3 sm:mb-4 px-2">
                 Students can scan this QR code to mark their attendance
               </p>
               <button
                 onClick={() => setShowQR(false)}
-                className="bg-cmu-gold text-cmu-maroon px-6 py-2 rounded-lg hover:bg-cmu-gold-dark hover:text-white font-medium transition-all duration-200 shadow-sm"
+                className="w-full sm:w-auto bg-cmu-gold text-cmu-maroon px-4 sm:px-6 py-2 rounded-lg hover:bg-cmu-gold-dark hover:text-white font-medium transition-all duration-200 shadow-sm text-sm sm:text-base"
               >
                 Close
               </button>
@@ -412,36 +418,37 @@ export default function AttendanceTracker() {
 
       {/* Session Attendance Modal */}
       {showSessionModal && sessionAttendance && (
-        <div className="fixed inset-0 bg-[#7700010f] bg-opacity-90 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 bg-[#7700010f] bg-opacity-90 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full mx-2 sm:mx-4 max-h-[95vh] sm:max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-gray-200 bg-cmu-maroon text-white">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Session Attendance</h3>
+            <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-b border-gray-200 bg-cmu-maroon text-white flex-shrink-0">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-base sm:text-lg font-medium truncate">Session Attendance</h3>
                 <button
                   onClick={() => {
                     setShowSessionModal(false);
                     setSessionAttendance(null);
                   }}
-                  className="text-white hover:text-cmu-gold-light transition-colors"
+                  className="text-white hover:text-cmu-gold-light transition-colors flex-shrink-0"
+                  aria-label="Close"
                 >
-                  <XCircle className="h-6 w-6" />
+                  <XCircle className="h-5 w-5 sm:h-6 sm:w-6" />
                 </button>
               </div>
             </div>
 
             {/* Modal Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-80px)]">
-              <div className="p-6">
+            <div className="overflow-y-auto flex-1">
+              <div className="p-3 sm:p-4 md:p-6">
                 {/* Session Summary */}
-                <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                  <h4 className="text-lg font-medium text-blue-900 mb-2">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                  <h4 className="text-base sm:text-lg font-medium text-blue-900 mb-2 break-words">
                     {sessionAttendance.session.class.name}
                     {sessionAttendance.session.class.subject && (
                       <span className="text-blue-700"> - {sessionAttendance.session.class.subject}</span>
                     )}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
                     <div>
                       <span className="font-medium text-blue-800">OTP:</span>
                       <span className="ml-2 font-mono">{sessionAttendance.session.otp}</span>
@@ -460,20 +467,20 @@ export default function AttendanceTracker() {
                 </div>
 
                 {/* Attendance List */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Student Name
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Email
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Attendance Time
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
                       </tr>
@@ -481,28 +488,28 @@ export default function AttendanceTracker() {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {sessionAttendance.attendanceRecords.length === 0 ? (
                         <tr>
-                          <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                            <Users className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                            <p className="text-lg font-medium">No students have marked attendance yet</p>
-                            <p className="text-sm">Share the OTP or QR code with your students</p>
+                          <td colSpan={4} className="px-3 sm:px-6 py-6 sm:py-8 text-center text-gray-500">
+                            <Users className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mb-3 sm:mb-4" />
+                            <p className="text-base sm:text-lg font-medium">No students have marked attendance yet</p>
+                            <p className="text-xs sm:text-sm mt-1">Share the OTP or QR code with your students</p>
                           </td>
                         </tr>
                       ) : (
                         sessionAttendance.attendanceRecords.map((record) => (
                           <tr key={record.id}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                              <div className="text-xs sm:text-sm font-medium text-gray-900">
                                 {record.student.name}
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                               {record.student.email}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                               {new Date(record.timestamp).toLocaleString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                              <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                 <CheckCircle className="h-3 w-3 mr-1" />
                                 Present
                               </span>
@@ -517,14 +524,14 @@ export default function AttendanceTracker() {
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-t border-gray-200 bg-gray-50 flex-shrink-0">
               <div className="flex justify-end">
                 <button
                   onClick={() => {
                     setShowSessionModal(false);
                     setSessionAttendance(null);
                   }}
-                  className="bg-cmu-maroon text-white px-6 py-2 rounded-lg hover:bg-cmu-maroon-dark font-medium transition-all duration-200 shadow-sm"
+                  className="w-full sm:w-auto bg-cmu-maroon text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-cmu-maroon-dark font-medium transition-all duration-200 shadow-sm text-sm sm:text-base"
                 >
                   Close
                 </button>

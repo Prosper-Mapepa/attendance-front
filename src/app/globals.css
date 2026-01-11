@@ -72,7 +72,7 @@ body {
 
 /* Custom button styles */
 .btn-cmu-primary {
-  background-color: var(--cmu-maroon);
+  background-color: #8D0000;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -82,9 +82,9 @@ body {
 }
 
 .btn-cmu-primary:hover {
-  background-color: var(--cmu-maroon-dark);
+  background-color: #6B0000;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(141, 0, 0, 0.3);
 }
 
 .btn-cmu-secondary {
@@ -120,7 +120,7 @@ body {
 
 /* Header styles */
 .header-cmu {
-  background: linear-gradient(135deg, var(--cmu-maroon) 0%, var(--cmu-maroon-dark) 100%);
+  background: linear-gradient(135deg, #8D0000 0%, #6B0000 100%);
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -138,12 +138,12 @@ body {
 }
 
 .nav-cmu .nav-item:hover {
-  color: var(--cmu-maroon);
+  color: #8D0000;
 }
 
 .nav-cmu .nav-item.active {
-  color: var(--cmu-maroon);
-  border-bottom-color: var(--cmu-maroon);
+  color: #8D0000;
+  border-bottom-color: #8D0000;
 }
 
 /* Animations */

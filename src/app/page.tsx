@@ -22,25 +22,27 @@ function LandingPage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="header-cmu">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-12 sm:h-14 md:h-16">
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <Logo size={40} variant="simple" showText={false} className="sm:w-12 sm:h-12" />
-              {/* <div>
-                <h1 className="text-lg sm:text-2xl font-bold text-white">
-                  AttendIQ
-                </h1>
-              </div> */}
+              <Logo size={40} variant="simple" showText={false} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <button
+                onClick={() => setShowLogin(true)}
+                className="group flex items-center justify-center bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold whitespace-nowrap w-[100px] sm:w-[110px]"
+              >
+                Sign In
+              </button>
               <Link
                 href="/signup"
-                className="group relative flex items-center justify-center btn-cmu-primary text-sm sm:text-base px-5 sm:px-6 py-2 sm:py-2.5 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold overflow-hidden"
+                className="group relative flex items-center justify-center btn-cmu-primary text-xs sm:text-sm px-4 sm:px-5 py-1.5 sm:py-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold overflow-hidden whitespace-nowrap w-[100px] sm:w-[110px]"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-cmu-maroon-dark to-cmu-maroon opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                <span className="relative flex items-center">
-                  Get Started
-                  <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#6B0000] to-[#8D0000] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="relative flex items-center justify-center w-full">
+                  <span className="hidden sm:inline">Get Started</span>
+                  <span className="sm:hidden">Start</span>
+                  <ArrowRight className="ml-1 sm:ml-1.5 h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
             </div>
@@ -48,50 +50,95 @@ function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-white via-gray-50 to-white min-h-screen flex items-center overflow-hidden">
-        {/* Enhanced Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cmu-maroon/5 via-transparent to-cmu-gold/5"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cmu-maroon/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cmu-gold/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cmu-maroon/3 rounded-full blur-3xl"></div>
+      {/* Hero Section - Full Screen Futuristic Design */}
+      <section className="relative bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#8D0000] to-[#6B0000] flex items-center overflow-hidden min-h-screen">
+        {/* Ultra-Smooth Multi-Layer Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#6B0000] to-[#6B0000]"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cmu-gold/12 via-cmu-gold/8 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#6B0000]/90 via-[#6B0000]/50 via-[#6B0000]/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cmu-gold/6 via-[#6B0000]/20 to-[#6B0000]/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-bl from-[#8D0000]/30 via-transparent to-transparent"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 sm:py-16 z-10">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {/* Ultra-Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='120' height='120' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 120 0 L 0 0 0 120' fill='none' stroke='%23ffffff' stroke-width='0.25'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")` }}></div>
+        
+        {/* Ultra-Smooth Animated Gradient Orbs */}
+        <div className="absolute top-10 right-10 w-[500px] h-[500px] bg-cmu-gold/18 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-10 left-10 w-[550px] h-[550px] bg-cmu-gold/14 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-1/2 right-1/4 w-[700px] h-[700px] bg-cmu-maroon/12 rounded-full blur-[160px]"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-cmu-gold/8 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-cmu-maroon/10 rounded-full blur-[130px]"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full pt-4 sm:pt-6 md:pt-8 pb-8 sm:pb-10 md:pb-12 z-10">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-center">
             {/* Left Column - Text Content */}
-            <div className="text-center lg:text-left space-y-6">
-              {/* Main Heading with Animation */}
-              <div className="space-y-4">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight animate-fade-in">
-                  Attend<span className="text-cmu-maroon bg-gradient-to-r from-cmu-maroon to-cmu-maroon-dark bg-clip-text text-transparent">IQ</span>
-                </h1>
-                <div className="h-1 w-24 bg-gradient-to-r from-cmu-maroon to-cmu-gold rounded-full mx-auto lg:mx-0"></div>
+            <div className="text-center lg:text-left space-y-3 sm:space-y-4">
+              {/* Compact Badge */}
+              <div className="inline-flex items-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full  text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-3 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300">
+                {/* <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-cmu-gold rounded-full mr-2.5 animate-pulse shadow-md shadow-cmu-gold/50"></div>
+                <span className="whitespace-nowrap">Smart Attendance System</span> */}
               </div>
               
-              {/* Description */}
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              {/* Compact Heading */}
+              <div className="space-y-2 sm:space-y-3">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight drop-shadow-2xl">
+                  <span className="text-white">Attend</span>
+                  <span className="bg-gradient-to-r from-cmu-gold via-cmu-gold-light to-cmu-gold bg-clip-text text-transparent">IQ</span>
+                </h1>
+                <div className="flex items-center gap-2 sm:gap-3 mx-auto lg:mx-0 w-fit">
+                  <div className="h-0.5 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-transparent via-cmu-gold to-cmu-gold"></div>
+                  <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-cmu-gold rounded-full shadow-md shadow-cmu-gold/50"></div>
+                  <div className="h-0.5 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-transparent via-cmu-gold to-cmu-gold"></div>
+                </div>
+              </div>
+              
+              {/* Compact Description */}
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light drop-shadow-md px-2 sm:px-0">
                 Streamline classroom attendance with QR codes, OTP verification, and real-time attendance tracking.
               </p>
               
-              {/* CTA Buttons */}
-              <div className="flex flex-row justify-between gap-4 pt-2 max-w-xl mx-auto lg:mx-0">
-                <Link
-                  href="/signup"
-                  className="group relative flex items-center justify-center btn-cmu-primary text-base px-8 py-3.5 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex-1 font-semibold overflow-hidden"
+              {/* Download App Buttons */}
+              <div className="flex flex-row gap-3 sm:gap-4 pt-3 max-w-lg mx-auto lg:mx-0">
+                <a
+                  href="https://apps.apple.com/ca/app/attend-iq/id6756984192"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border-2 border-white/30 hover:border-white/50 text-white px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 font-semibold text-xs sm:text-sm flex-1"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-cmu-maroon-dark to-cmu-maroon opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="relative flex items-center">
-                    Get Started
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Link>
-                <button 
-                  onClick={() => setShowLogin(true)} 
-                  className="group flex items-center justify-center btn-cmu-secondary text-base px-8 py-3.5 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex-1 font-semibold"
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                  </svg>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span className="text-[10px] opacity-80">Download on the</span>
+                    <span className="text-sm sm:text-base font-bold">App Store</span>
+                  </div>
+                </a>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.attendiq.app&pcampaignid=web_share"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-xl border-2 border-white/30 hover:border-white/50 text-white px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 font-semibold text-xs sm:text-sm flex-1"
                 >
-                  Sign In
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                  </svg>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span className="text-[10px] opacity-80">GET IT ON</span>
+                    <span className="text-sm sm:text-base font-bold">Google Play</span>
+                  </div>
+                </a>
+              </div>
+              
+              {/* Compact Trust Indicators */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-5 pt-4">
+                <div className="flex items-center gap-2 text-sm sm:text-base md:text-lg text-white/90">
+                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-cmu-gold" />
+                  <span className="font-medium">99.9% Accuracy</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm sm:text-base md:text-lg text-white/90">
+                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-cmu-gold" />
+                  <span className="font-medium">Real-time Updates</span>
+                </div>
               </div>
 
               {/* Trust Badges */}
@@ -116,96 +163,98 @@ function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-transparent to-transparent"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            {/* <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cmu-gold/20 to-cmu-gold/10 border border-cmu-gold/30 text-cmu-maroon text-sm font-semibold mb-6 shadow-sm">
-              <Star className="h-4 w-4 mr-2 fill-cmu-gold text-cmu-maroon" />
-              Powerful Features
-            </div> */}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50/40 via-transparent to-transparent"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 sm:mb-5 md:mb-6 leading-tight">
               Everything You Need
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Comprehensive tools for efficient classroom attendance management and student engagement
             </p>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <QrCode className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <QrCode className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">QR Code Scanning</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">QR Code Scanning</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   Students can quickly mark attendance by scanning QR codes displayed in the classroom with their smartphones.
                 </p>
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Shield className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">OTP Verification</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">OTP Verification</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   Secure one-time password verification ensures only authorized students can mark attendance.
                 </p>
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Clock className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Real-time Tracking</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Real-time Tracking</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   Monitor attendance in real-time with instant updates and notifications for instructors and administrators.
                 </p>
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <BarChart3 className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <BarChart3 className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Analytics & Reports</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Analytics & Reports</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   Comprehensive attendance reports and analytics for better insights and decision making.
                 </p>
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <Smartphone className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Smartphone className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Mobile Optimized</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Mobile Optimized</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   Fully responsive design works perfectly on all devices and screen sizes for seamless user experience.
                 </p>
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-2xl border border-gray-200 hover:border-cmu-maroon/30 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cmu-maroon/5 via-cmu-maroon/3 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-cmu-maroon to-cmu-maroon-dark rounded-2xl flex items-center justify-center mx-auto mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <MapPin className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+            <div className="group relative bg-white rounded-3xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-cmu-maroon/40 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000]/8 via-[#8D0000]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8D0000]/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#8D0000] via-[#6B0000] to-[#8D0000] rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-xl group-hover:shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <MapPin className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white mx-auto" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Location Verification</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors text-center">Location Verification</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-center">
                   GPS-based location verification ensures students are physically present in class for accurate attendance.
                 </p>
               </div>
@@ -215,45 +264,35 @@ function LandingPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 sm:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cmu-maroon/5 via-transparent to-cmu-gold/5"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight">
+      <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 sm:mb-5 md:mb-6 leading-tight">
               Designed for Success
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Tailored solutions for every role in the educational ecosystem
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-6xl mx-auto">
-            <div className="group flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-white/60 hover:bg-white shadow-md hover:shadow-xl border border-gray-200 hover:border-cmu-gold/30 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-cmu-gold to-cmu-gold-dark rounded-2xl flex items-center justify-center mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-cmu-maroon" />
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors">For Instructors</h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-6xl mx-auto">
+            <div className="group flex flex-col text-left p-6 sm:p-8 md:p-10 rounded-2xl bg-white border border-gray-200 hover:border-cmu-maroon/30 hover:shadow-lg transition-all duration-300">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 group-hover:text-cmu-maroon transition-colors">For Instructors</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
                 Streamline attendance taking, reduce administrative burden, and focus more on teaching with automated tracking and comprehensive reporting.
               </p>
             </div>
 
-            <div className="group flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-white/60 hover:bg-white shadow-md hover:shadow-xl border border-gray-200 hover:border-cmu-gold/30 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-cmu-gold to-cmu-gold-dark rounded-2xl flex items-center justify-center mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-cmu-maroon" />
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors">For Students</h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+            <div className="group flex flex-col text-left p-6 sm:p-8 md:p-10 rounded-2xl bg-white border border-gray-200 hover:border-cmu-maroon/30 hover:shadow-lg transition-all duration-300">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 group-hover:text-cmu-maroon transition-colors">For Students</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
                 Quick and easy attendance marking with your smartphone, real-time attendance status, and transparent tracking for better engagement.
               </p>
             </div>
 
-            <div className="group flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-white/60 hover:bg-white shadow-md hover:shadow-xl border border-gray-200 hover:border-cmu-gold/30 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-cmu-gold to-cmu-gold-dark rounded-2xl flex items-center justify-center mb-5 sm:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-cmu-maroon" />
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-cmu-maroon transition-colors">For Administration</h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+            <div className="group flex flex-col text-left p-6 sm:p-8 md:p-10 rounded-2xl bg-white border border-gray-200 hover:border-cmu-maroon/30 hover:shadow-lg transition-all duration-300 sm:col-span-2 md:col-span-1">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 group-hover:text-cmu-maroon transition-colors">For Administration</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
                 Comprehensive reporting, compliance tracking, and data-driven insights for better academic management and decision making.
               </p>
             </div>
@@ -340,47 +379,51 @@ function LandingPage() {
       </section> */}
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-12 sm:py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cmu-maroon/10 to-cmu-gold/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12">
+      <footer className="bg-gradient-to-br from-[#6B0000] via-[#6B0000] via-gray-900 to-gray-900 text-white py-10 sm:py-12 md:py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cmu-gold/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-[#6B0000]/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#6B0000]/60 to-gray-900"></div>
+        <div className="absolute inset-0 opacity-8" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23ffffff' stroke-width='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")` }}></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-cmu-maroon/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-900/30 rounded-full blur-3xl"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 z-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12">
             <div>
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
-                <Logo size={40} variant="simple" showText={false} className="sm:w-12 sm:h-12" />
+              <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-5">
+                <Logo size={40} variant="simple" showText={false} className="sm:w-12 sm:h-12 md:w-14 md:h-14" />
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold">AttendIQ</h3>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">AttendIQ</h3>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 max-w-sm">
+              <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-5 max-w-md">
                 Modern attendance tracking system for efficient classroom management.
               </p>
-          
             </div>
             
             <div>
-              <h4 className="font-bold text-base sm:text-lg mb-4 sm:mb-6 text-cmu-gold">Resources</h4>
-              <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300">
+              <h4 className="font-bold text-base sm:text-lg md:text-xl mb-4 sm:mb-5 text-cmu-gold">Resources</h4>
+              <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base md:text-lg text-gray-300">
                 <li>
                   <a 
                     href="/privacy-policy" 
-                    className="hover:text-cmu-gold transition-colors cursor-pointer flex items-center"
+                    className="hover:text-cmu-gold transition-colors cursor-pointer flex items-center group"
                   >
-                    <span className="w-1.5 h-1.5 bg-cmu-gold rounded-full mr-2"></span>
-                    Privacy Policy
+                    <span className="w-2 h-2 bg-cmu-gold rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
+                    <span className="group-hover:translate-x-1 transition-transform">Privacy Policy</span>
                   </a>
                 </li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8">
+          <div className="border-t border-gray-700/50 mt-6 sm:mt-8 md:mt-10 pt-6 sm:pt-8 md:pt-10">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
-              <p className="text-xs sm:text-sm text-gray-400">
+              <p className="text-sm sm:text-base text-gray-400">
                 &copy; 2025 AttendIQ. All rights reserved.
               </p>
-              <div className="flex items-center justify-center space-x-4 sm:space-x-6 text-xs sm:text-sm text-gray-400">
+              <div className="flex items-center justify-center space-x-4 sm:space-x-5 md:space-x-6 text-sm sm:text-base text-gray-400">
                 <span className="hover:text-cmu-gold transition-colors">
-                Built by <a href="https://prosper-mapepa-portfolio.netlify.app" target="_blank" rel="noopener noreferrer" className="hover:text-cmu-gold transition-colors font-bold text-white">Prosper Mapepa </a>
+                Built by <a href="https://prosper-mapepa-portfolio.netlify.app" target="_blank" rel="noopener noreferrer" className="hover:text-cmu-gold transition-colors font-bold text-white hover:underline">Prosper Mapepa</a>
                 </span>
               </div>
             </div>
@@ -404,29 +447,40 @@ function MobileScreenshotSlider() {
   }, [screenshots.length]);
 
   return (
-    <div className="relative w-full max-w-sm lg:max-w-md">
-      {/* Slider Container with Reduced Padding */}
-      <div className="relative overflow-hidden rounded-2xl shadow-xl bg-gradient-to-br from-white via-gray-50 to-white border border-gray-200/50">
+    <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md">
+      {/* Enhanced Maroon Glow Effect */}
+      <div className="absolute -inset-6 bg-gradient-to-br from-[#8D0000]/25 via-[#6B0000]/20 to-[#8D0000]/25 rounded-2xl blur-3xl opacity-80"></div>
+      <div className="absolute -inset-4 bg-gradient-to-br from-[#8D0000]/20 via-[#6B0000]/15 to-[#8D0000]/20 rounded-2xl blur-2xl"></div>
+      
+      {/* Floating Slider Container - Transparent, No Border */}
+      <div className="relative overflow-hidden">
         <div 
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {screenshots.map((screenshot, index) => (
-            <div key={index} className="min-w-full flex justify-center items-center p-3 sm:p-4 lg:p-5">
-              <div className="relative w-full max-w-[200px] sm:max-w-[240px] lg:max-w-[280px] aspect-[9/19.5] mx-auto">
-                {/* Phone Frame with Reduced Padding */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-300 via-gray-200 to-gray-300 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl p-1.5 sm:p-2 transform hover:scale-105 transition-transform duration-300">
-                  <div className="w-full h-full bg-black rounded-[1.75rem] sm:rounded-[2rem] overflow-hidden relative ring-1 ring-gray-800/20">
-                    <Image
-                      src={`/assets/${screenshot}`}
-                      alt={`AttendIQ mobile screenshot ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      priority={index === 0}
-                      sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 280px"
-                      quality={90}
-                      unoptimized={true}
-                    />
+            <div key={index} className="min-w-full flex justify-center items-center p-3 sm:p-4 md:p-5">
+              <div className="relative w-full max-w-[180px] sm:max-w-[220px] md:max-w-[260px] lg:max-w-[300px] aspect-[9/19.5] mx-auto">
+                {/* Floating Phone Frame */}
+                <div className="absolute inset-0 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                  {/* Enhanced Maroon Glow Effect */}
+                  <div className="absolute -inset-2 bg-gradient-to-br from-[#8D0000]/50 via-[#6B0000]/40 to-[#8D0000]/50 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] blur-lg"></div>
+                  
+                  {/* Enhanced Gradient Border Frame */}
+                  <div className="absolute inset-0 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#8D0000] to-[#6B0000] p-[3px]">
+                    {/* Screen Container */}
+                    <div className="w-full h-full bg-black rounded-[1.75rem] sm:rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden relative">
+                      <Image
+                        src={`/assets/${screenshot}`}
+                        alt={`AttendIQ mobile screenshot ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        priority={index === 0}
+                        sizes="(max-width: 640px) 180px, (max-width: 768px) 220px, (max-width: 1024px) 260px, 300px"
+                        quality={90}
+                        unoptimized={true}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -435,16 +489,16 @@ function MobileScreenshotSlider() {
         </div>
       </div>
 
-      {/* Navigation Dots with Reduced Spacing */}
-      <div className="flex justify-center items-center gap-1.5 mt-3 sm:mt-4">
+      {/* Compact Navigation Dots */}
+      <div className="flex justify-center items-center gap-2 mt-3 sm:mt-4">
         {screenshots.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`transition-all duration-300 rounded-full ${
               index === currentIndex
-                ? 'w-7 h-1.5 bg-cmu-maroon shadow-sm'
-                : 'w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400 hover:w-2'
+                ? 'w-8 h-2 bg-cmu-gold shadow-md shadow-cmu-gold/50'
+                : 'w-2 h-2 bg-white/40 hover:bg-white/60 hover:w-2.5'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -487,21 +541,21 @@ function MainContent() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="header-cmu">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20">
-            <div className="flex items-center">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <Logo size={40} variant="simple" showText={false} className="sm:w-12 sm:h-12" />
-                <div>
-                  <h1 className="text-lg sm:text-2xl font-bold text-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
+            <div className="flex items-center min-w-0 flex-1">
+              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                <Logo size={32} variant="simple" showText={false} className="sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" />
+                <div className="min-w-0">
+                  <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white truncate">
                     AttendIQ
                   </h1>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
               <div className="text-right hidden sm:block">
-                <p className="text-sm text-white font-medium">
+                <p className="text-xs sm:text-sm text-white font-medium truncate max-w-[120px] sm:max-w-none">
                   Welcome, {user.name}
                 </p>
                 <p className="text-xs text-cmu-gold-light">
@@ -509,7 +563,7 @@ function MainContent() {
                 </p>
               </div>
               <div className="text-right sm:hidden">
-                <p className="text-xs text-white font-medium truncate max-w-[100px]">
+                <p className="text-xs text-white font-medium truncate max-w-[80px]">
                   {user.name}
                 </p>
                 <p className="text-xs text-cmu-gold-light">
@@ -518,9 +572,9 @@ function MainContent() {
               </div>
               <button
                 onClick={logout}
-                className="flex items-center space-x-1 sm:space-x-2 bg-cmu-gold text-cmu-maroon px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium hover:bg-cmu-gold-dark hover:text-white transition-all duration-200 shadow-sm text-sm sm:text-base"
+                className="flex items-center space-x-1 sm:space-x-2 bg-cmu-gold text-cmu-maroon px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg font-medium hover:bg-cmu-gold-dark hover:text-white transition-all duration-200 shadow-sm text-xs sm:text-sm md:text-base"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
@@ -531,8 +585,8 @@ function MainContent() {
       {/* Navigation - Only for Teachers */}
       {user.role === 'TEACHER' && (
         <nav className="nav-cmu">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex space-x-8">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+            <div className="flex space-x-4 sm:space-x-6 md:space-x-8 overflow-x-auto">
               {[
                 { id: 'classes', label: 'Classes', icon: BookOpen },
                 { id: 'attendance', label: 'Attendance', icon: Users },
@@ -542,13 +596,13 @@ function MainContent() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`nav-item flex items-center space-x-2 py-4 px-1 border-b-4 font-medium text-sm ${
+                    className={`nav-item flex items-center space-x-1 sm:space-x-2 py-3 sm:py-4 px-1 border-b-4 font-medium text-xs sm:text-sm whitespace-nowrap ${
                       activeTab === tab.id
-                        ? 'active border-cmu-maroon rounded'
-                        : 'border-transparent hover:border-cmu-maroon'
+                        ? 'active border-[#8D0000] rounded'
+                        : 'border-transparent hover:border-[#8D0000]'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span>{tab.label}</span>
                   </button>
                 );
@@ -559,7 +613,7 @@ function MainContent() {
       )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-4 sm:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
         {user.role === 'TEACHER' ? (
           <>
             {activeTab === 'classes' && <ClassManagement />}

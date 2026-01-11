@@ -483,11 +483,11 @@ export default function GoogleMapLocationPicker({
 
   if (!apiKey) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg max-w-md w-full mx-4 p-6">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-white rounded-lg max-w-md w-full mx-2 sm:mx-4 p-4 sm:p-6">
           <div className="text-center">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Google Maps API Key Required</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">Google Maps API Key Required</h3>
+            <p className="text-xs sm:text-sm text-gray-600 mb-4">
               To use Google Maps for precise location selection, you need to configure a Google Maps API key.
             </p>
             <div className="space-y-3">
@@ -508,22 +508,23 @@ export default function GoogleMapLocationPicker({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white rounded-lg max-w-6xl w-full mx-2 sm:mx-4 max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">Select Classroom Location</h3>
-              <p className="text-sm text-gray-500 mt-1">
+        <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900">Select Classroom Location</h3>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
                 Click anywhere on the map or drag the marker to select the precise location of your classroom
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 ml-2"
+              aria-label="Close"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -531,18 +532,18 @@ export default function GoogleMapLocationPicker({
         </div>
 
         {/* Map Container */}
-        <div className="h-96 w-full relative">
+        <div className="h-64 sm:h-80 md:h-96 w-full relative flex-shrink-0">
           <Wrapper apiKey={apiKey} render={render} libraries={["places", "geocoding"]} />
           
           {/* Map Controls */}
-          <div className="absolute top-4 right-4 z-10 space-y-2">
+          <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 space-y-2">
             {/* My Location Button */}
             <button
               onClick={getUserCurrentLocation}
-              className="bg-white hover:bg-gray-50 text-gray-700 p-2 rounded-full shadow-lg border border-gray-300 transition-colors"
+              className="bg-white hover:bg-gray-50 text-gray-700 p-1.5 sm:p-2 rounded-full shadow-lg border border-gray-300 transition-colors"
               title="Get my current location"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
@@ -550,7 +551,7 @@ export default function GoogleMapLocationPicker({
             
             {/* Location Status */}
             {userLocation && (
-              <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-300 text-xs">
+              <div className="bg-white p-1.5 sm:p-2 rounded-lg shadow-lg border border-gray-300 text-xs hidden sm:block">
                 <div className="flex items-center space-x-1 text-green-600">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span>Location found</span>
@@ -561,12 +562,12 @@ export default function GoogleMapLocationPicker({
         </div>
 
         {/* Selected Coordinates Display */}
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <div className="space-y-4">
+        <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-t border-gray-200 bg-gray-50 overflow-y-auto flex-1">
+          <div className="space-y-3 sm:space-y-4">
             {/* Coordinate Display */}
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">Selected Coordinates:</p>
-              <div className="grid grid-cols-2 gap-4">
+              <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Selected Coordinates:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Latitude</label>
                   <input
@@ -580,7 +581,7 @@ export default function GoogleMapLocationPicker({
                         handleLocationSelect(lat, selectedPosition[1]);
                       }
                     }}
-                    className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-mono border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -596,7 +597,7 @@ export default function GoogleMapLocationPicker({
                         handleLocationSelect(selectedPosition[0], lng);
                       }
                     }}
-                    className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-mono border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -607,10 +608,10 @@ export default function GoogleMapLocationPicker({
                 <p className="text-xs text-green-600 font-medium">
                   🎯 Google Maps Precision: ~0.1 meter accuracy with satellite imagery
                 </p>
-                <div className="flex items-center space-x-2 mt-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-2">
                   <button
                     onClick={getUserCurrentLocation}
-                    className="flex items-center space-x-1 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+                    className="flex items-center justify-center space-x-1 px-2 py-1.5 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -619,7 +620,7 @@ export default function GoogleMapLocationPicker({
                     <span>Use My Location</span>
                   </button>
                   {userLocation && (
-                    <span className="text-xs text-green-600">
+                    <span className="text-xs text-green-600 break-all sm:break-normal">
                       ✓ Location found: {userLocation.lat.toFixed(6)}, {userLocation.lng.toFixed(6)}
                     </span>
                   )}
@@ -628,16 +629,16 @@ export default function GoogleMapLocationPicker({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-3">
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Confirm Location
               </button>

@@ -32,7 +32,7 @@ export default function LogoAuth({
       checkmark: '#FFFFFF',
     },
     simple: {
-      checkmark: '#8B0000', // Gold checkmark only
+      checkmark: '#FFD700', // Gold checkmark only
     }
   };
 
