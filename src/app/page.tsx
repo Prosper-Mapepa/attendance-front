@@ -54,19 +54,19 @@ function LandingPage() {
       <section className="relative bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#8D0000] to-[#6B0000] flex items-center overflow-hidden min-h-screen">
         {/* Ultra-Smooth Multi-Layer Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#6B0000] to-[#6B0000]"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cmu-gold/12 via-cmu-gold/8 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8D0000]/8 via-[#6B0000]/6 via-transparent to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#6B0000]/90 via-[#6B0000]/50 via-[#6B0000]/20 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cmu-gold/6 via-[#6B0000]/20 to-[#6B0000]/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#6B0000]/15 via-[#6B0000]/20 to-[#6B0000]/40"></div>
         <div className="absolute inset-0 bg-gradient-to-bl from-[#8D0000]/30 via-transparent to-transparent"></div>
         
         {/* Ultra-Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='120' height='120' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 120 0 L 0 0 0 120' fill='none' stroke='%23ffffff' stroke-width='0.25'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")` }}></div>
         
         {/* Ultra-Smooth Animated Gradient Orbs */}
-        <div className="absolute top-10 right-10 w-[500px] h-[500px] bg-cmu-gold/18 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-10 left-10 w-[550px] h-[550px] bg-cmu-gold/14 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-10 right-10 w-[500px] h-[500px] bg-[#8D0000]/15 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-10 left-10 w-[550px] h-[550px] bg-[#6B0000]/12 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: '1.5s' }}></div>
         <div className="absolute top-1/2 right-1/4 w-[700px] h-[700px] bg-cmu-maroon/12 rounded-full blur-[160px]"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-cmu-gold/8 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-[600px] h-[600px] bg-[#8D0000]/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-cmu-maroon/10 rounded-full blur-[130px]"></div>
         
         <div className="relative max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 w-full pt-4 sm:pt-6 md:pt-8 pb-8 sm:pb-10 md:pb-12 z-10">
@@ -74,18 +74,18 @@ function LandingPage() {
             {/* Left Column - Text Content */}
             <div className="text-center lg:text-left space-y-3 sm:space-y-4">
               {/* Compact Badge */}
-              <div className="inline-flex items-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full  text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-3 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300">
+              <div className="inline-flex items-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full  text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-3 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
                 {/* <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-cmu-gold rounded-full mr-2.5 animate-pulse shadow-md shadow-cmu-gold/50"></div>
                 <span className="whitespace-nowrap">Smart Attendance System</span> */}
               </div>
               
               {/* Compact Heading */}
-              <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-2 sm:space-y-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight drop-shadow-2xl">
-                  <span className="text-white">Attend</span>
-                  <span className="bg-gradient-to-r from-cmu-gold via-cmu-gold-light to-cmu-gold bg-clip-text text-transparent">IQ</span>
+                  <span className="text-white inline-block animate-slide-in-left" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>Attend</span>
+                  <span className="bg-gradient-to-r from-cmu-gold via-cmu-gold to-cmu-gold bg-clip-text text-transparent inline-block animate-slide-in-right ml-2" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>IQ</span>
                 </h1>
-                <div className="flex items-center gap-2 sm:gap-3 mx-auto lg:mx-0 w-fit">
+                <div className="flex items-center gap-2 sm:gap-3 mx-auto lg:mx-0 w-fit opacity-0 animate-fade-in-scale" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
                   <div className="h-0.5 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-transparent via-cmu-gold to-cmu-gold"></div>
                   <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-cmu-gold rounded-full shadow-md shadow-cmu-gold/50"></div>
                   <div className="h-0.5 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-transparent via-cmu-gold to-cmu-gold"></div>
@@ -93,12 +93,12 @@ function LandingPage() {
               </div>
               
               {/* Compact Description */}
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light drop-shadow-md px-2 sm:px-0">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light drop-shadow-md px-2 sm:px-0 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
                 Streamline classroom attendance with QR codes, OTP verification, and real-time attendance tracking.
               </p>
               
               {/* Download App Buttons */}
-              <div className="flex flex-row gap-3 sm:gap-4 pt-3 max-w-lg mx-auto lg:mx-0">
+              <div className="flex flex-row gap-3 sm:gap-4 pt-3 max-w-lg mx-auto lg:mx-0 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.7s', animationFillMode: 'forwards' }}>
                 <a
                   href="https://apps.apple.com/ca/app/attend-iq/id6756984192"
                   target="_blank"
@@ -130,7 +130,7 @@ function LandingPage() {
               </div>
               
               {/* Compact Trust Indicators */}
-              <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-5 pt-4">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-5 pt-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
                 <div className="flex items-center gap-2 text-sm sm:text-base md:text-lg text-white/90">
                   <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-cmu-gold" />
                   <span className="font-medium">99.9% Accuracy</span>
@@ -380,7 +380,7 @@ function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-gradient-to-br from-[#6B0000] via-[#6B0000] via-gray-900 to-gray-900 text-white py-10 sm:py-12 md:py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cmu-gold/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#6B0000]/8 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-[#6B0000]/80 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#6B0000]/60 to-gray-900"></div>
         <div className="absolute inset-0 opacity-8" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23ffffff' stroke-width='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")` }}></div>
@@ -453,9 +453,9 @@ function MobileScreenshotSlider() {
       <div className="absolute -inset-4 bg-gradient-to-br from-[#8D0000]/20 via-[#6B0000]/15 to-[#8D0000]/20 rounded-2xl blur-2xl"></div>
       
       {/* Floating Slider Container - Transparent, No Border */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden opacity-0 animate-fade-in-scale" style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
         <div 
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {screenshots.map((screenshot, index) => (
@@ -470,16 +470,16 @@ function MobileScreenshotSlider() {
                   <div className="absolute inset-0 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-[#8D0000] via-[#6B0000] via-[#8D0000] to-[#6B0000] p-[3px]">
                     {/* Screen Container */}
                     <div className="w-full h-full bg-black rounded-[1.75rem] sm:rounded-[2.25rem] md:rounded-[2.75rem] overflow-hidden relative">
-                      <Image
-                        src={`/assets/${screenshot}`}
-                        alt={`AttendIQ mobile screenshot ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        priority={index === 0}
+                    <Image
+                      src={`/assets/${screenshot}`}
+                      alt={`AttendIQ mobile screenshot ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      priority={index === 0}
                         sizes="(max-width: 640px) 180px, (max-width: 768px) 220px, (max-width: 1024px) 260px, 300px"
-                        quality={90}
-                        unoptimized={true}
-                      />
+                      quality={90}
+                      unoptimized={true}
+                    />
                     </div>
                   </div>
                 </div>
