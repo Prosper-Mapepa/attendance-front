@@ -8,6 +8,7 @@ import LoginForm from './components/LoginForm';
 import ClassManagement from './components/ClassManagement';
 import AttendanceTracker from './components/AttendanceTracker';
 import StudentDashboard from './components/StudentDashboard';
+import AdminDashboard from './components/AdminDashboard';
 import Logo from './components/Logo';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
@@ -559,7 +560,7 @@ function MainContent() {
                   Welcome, {user.name}
                 </p>
                 <p className="text-xs text-cmu-gold-light">
-                  {user.role === 'TEACHER' ? 'Instructor' : 'Student'}
+                  {user.role === 'ADMIN' ? 'Admin' : user.role === 'TEACHER' ? 'Instructor' : 'Student'}
                 </p>
               </div>
               <div className="text-right sm:hidden">
@@ -567,7 +568,7 @@ function MainContent() {
                   {user.name}
                 </p>
                 <p className="text-xs text-cmu-gold-light">
-                  {user.role === 'TEACHER' ? 'Instructor' : 'Student'}
+                  {user.role === 'ADMIN' ? 'Admin' : user.role === 'TEACHER' ? 'Instructor' : 'Student'}
                 </p>
               </div>
               <button
@@ -614,7 +615,9 @@ function MainContent() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-4 sm:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
-        {user.role === 'TEACHER' ? (
+        {user.role === 'ADMIN' ? (
+          <AdminDashboard />
+        ) : user.role === 'TEACHER' ? (
           <>
             {activeTab === 'classes' && <ClassManagement />}
             {activeTab === 'attendance' && <AttendanceTracker />}
