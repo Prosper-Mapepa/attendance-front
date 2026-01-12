@@ -94,6 +94,7 @@ export default function AttendanceTracker() {
   const [qrCodeData, setQrCodeData] = useState<string>('');
   const [showQR, setShowQR] = useState(false);
   const [currentSessionOTP, setCurrentSessionOTP] = useState<string>('');
+  const [currentSessionDeadline, setCurrentSessionDeadline] = useState<string | null>(null);
   const [showSessionModal, setShowSessionModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const { alert, showAlert, dismissAlert } = useAutoDismissAlert({ timeout: 6000 });
@@ -167,6 +168,7 @@ export default function AttendanceTracker() {
       const qrCodeUrl = await QRCode.toDataURL(qrData);
       setQrCodeData(qrCodeUrl);
       setCurrentSessionOTP(newSession.otp);
+      setCurrentSessionDeadline(newSession.clockInDeadline || newSession.validUntil);
       setShowQR(true);
       showAlert('Session created successfully! QR code is ready.', 'success');
       
@@ -188,6 +190,7 @@ export default function AttendanceTracker() {
     const qrCodeUrl = await QRCode.toDataURL(qrData);
     setQrCodeData(qrCodeUrl);
     setCurrentSessionOTP(session.otp);
+    setCurrentSessionDeadline(session.clockInDeadline || session.validUntil);
     setShowQR(true);
   };
 
@@ -236,6 +239,32 @@ export default function AttendanceTracker() {
 
     return () => clearInterval(interval);
   }, [activeSessionId]);
+
+  // Auto-close QR modal when deadline expires
+  useEffect(() => {
+    if (!showQR || !currentSessionDeadline) return;
+
+    const deadline = new Date(currentSessionDeadline);
+    const now = new Date();
+    const timeUntilDeadline = deadline.getTime() - now.getTime();
+
+    // If deadline has already passed, close immediately
+    if (timeUntilDeadline <= 0) {
+      setShowQR(false);
+      setCurrentSessionDeadline(null);
+      showAlert('Clock-in deadline has expired. The session is now closed.', 'info');
+      return;
+    }
+
+    // Set timeout to close modal when deadline expires
+    const timeout = setTimeout(() => {
+      setShowQR(false);
+      setCurrentSessionDeadline(null);
+      showAlert('Clock-in deadline has expired. The session is now closed.', 'info');
+    }, timeUntilDeadline);
+
+    return () => clearTimeout(timeout);
+  }, [showQR, currentSessionDeadline]);
 
   // Check for active sessions on mount and set active session
   useEffect(() => {
@@ -405,8 +434,22 @@ export default function AttendanceTracker() {
               <p className="text-xs sm:text-sm text-cmu-gold-light mb-3 sm:mb-4 px-2">
                 Students can scan this QR code to mark their attendance
               </p>
+              {/* Deadline countdown */}
+              {currentSessionDeadline && (
+                <div className="mb-3 sm:mb-4">
+                  <div className="bg-white bg-opacity-20 rounded-lg p-2 sm:p-3">
+                    <p className="text-xs sm:text-sm text-cmu-gold-light mb-1">Time remaining:</p>
+                    <p className="text-base sm:text-lg font-bold text-white font-mono">
+                      {formatTimeRemaining(currentSessionDeadline)}
+                    </p>
+                  </div>
+                </div>
+              )}
               <button
-                onClick={() => setShowQR(false)}
+                onClick={() => {
+                  setShowQR(false);
+                  setCurrentSessionDeadline(null);
+                }}
                 className="w-full sm:w-auto bg-cmu-gold text-cmu-maroon px-4 sm:px-6 py-2 rounded-lg hover:bg-cmu-gold-dark hover:text-white font-medium transition-all duration-200 shadow-sm text-sm sm:text-base"
               >
                 Close
