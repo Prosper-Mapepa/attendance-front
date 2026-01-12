@@ -58,7 +58,7 @@ const classSchema = z.object({
   schedule: z.string().min(1, 'Schedule is required'),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  locationRadius: z.number().min(10).max(200).optional(),
+  locationRadius: z.number().min(1.5).max(30.5).optional(), // In meters (converted from feet: 5-100 feet = 1.5-30.5 meters)
 });
 
 type ClassFormData = z.infer<typeof classSchema>;
