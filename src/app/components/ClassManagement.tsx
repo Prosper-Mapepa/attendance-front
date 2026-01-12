@@ -168,6 +168,8 @@ export default function ClassManagement() {
 
   const handleEdit = (classItem: Class) => {
     setEditingClass(classItem);
+    // Convert meters to feet for display (1 meter = 3.28084 feet)
+    const locationRadiusInFeet = classItem.locationRadius ? classItem.locationRadius / 0.3048 : undefined;
     form.reset({
       name: classItem.name,
       description: classItem.description || '',
@@ -175,7 +177,7 @@ export default function ClassManagement() {
       schedule: classItem.schedule,
       latitude: classItem.latitude || undefined,
       longitude: classItem.longitude || undefined,
-      locationRadius: classItem.locationRadius || undefined,
+      locationRadius: locationRadiusInFeet, // Will be converted back to meters on submit
     });
     setShowForm(true);
   };
@@ -592,7 +594,7 @@ export default function ClassManagement() {
                     </p>
                     <p className="text-xs text-gray-700 font-mono">
                       {editingClass.latitude.toFixed(6)}, {editingClass.longitude.toFixed(6)}
-                      {editingClass.locationRadius && ` • ${editingClass.locationRadius}m radius`}
+                      {editingClass.locationRadius && ` • ${Math.round(editingClass.locationRadius / 0.3048)}ft radius`}
                     </p>
                   </div>
                 )}
@@ -722,16 +724,24 @@ export default function ClassManagement() {
                     {/* <p className="text-xs text-gray-500 mt-2">6 decimal places (~0.1m precision)</p> */}
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Radius</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Radius (feet)</label>
                     <input
-                      {...form.register('locationRadius', { valueAsNumber: true })}
+                      {...form.register('locationRadius', { 
+                        valueAsNumber: true,
+                        setValueAs: (v) => {
+                          // Convert feet to meters for backend (1 foot = 0.3048 meters)
+                          const feet = parseFloat(v);
+                          return isNaN(feet) ? undefined : feet * 0.3048;
+                        }
+                      })}
                       type="number"
-                      min="10"
-                      max="200"
+                      min="5"
+                      max="100"
+                      step="1"
                       className="block w-full border-2 border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cmu-maroon focus:border-cmu-maroon transition-all"
-                      placeholder="50"
+                      placeholder="30"
                     />
-                    {/* <p className="text-xs text-gray-500 mt-2">Range: 10-200 meters</p> */}
+                    <p className="text-xs text-gray-500 mt-2">Range: 5-100 feet (more precise location verification)</p>
                   </div>
                 </div>
               </div>
@@ -762,19 +772,23 @@ export default function ClassManagement() {
                     <ul className="text-xs text-yellow-800 space-y-1.5">
                       <li className="flex items-start">
                         <span className="mr-2">•</span>
-                        <span>If students get &quot;Too far from class&quot; errors, verify coordinates are accurate</span>
+                        <span>Location verification is precise - students must be within the exact radius to clock in/out</span>
                       </li>
                       <li className="flex items-start">
                         <span className="mr-2">•</span>
-                        <span>Consider increasing the radius for larger classrooms (up to 200m)</span>
+                        <span>If students get &quot;Too far from class&quot; errors, verify coordinates are accurate (use Google Maps)</span>
                       </li>
                       <li className="flex items-start">
                         <span className="mr-2">•</span>
-                        <span>Verify the classroom location using Google Maps</span>
+                        <span>Consider increasing the radius for larger classrooms (up to 100ft / ~30m)</span>
                       </li>
                       <li className="flex items-start">
                         <span className="mr-2">•</span>
-                        <span>Test location verification from the actual classroom</span>
+                        <span>Test location verification from the actual classroom before the session starts</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>Ensure students have location services enabled and accurate GPS signal</span>
                       </li>
                     </ul>
                   </div>
