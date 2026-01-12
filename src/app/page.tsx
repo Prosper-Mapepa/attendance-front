@@ -545,14 +545,7 @@ function MainContent() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
             <div className="flex items-center min-w-0 flex-1">
-              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-                <Logo size={32} variant="simple" showText={false} className="sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" />
-                <div className="min-w-0">
-                  <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white truncate">
-                    AttendIQ
-                  </h1>
-                </div>
-              </div>
+              <Logo size={50} variant="simple" showText={false} className="ml-1 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" />
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
               <div className="text-right hidden sm:block">
@@ -585,9 +578,9 @@ function MainContent() {
 
       {/* Navigation - Only for Teachers */}
       {user.role === 'TEACHER' && (
-        <nav className="nav-cmu">
+        <nav className="bg-white border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-            <div className="flex space-x-4 sm:space-x-6 md:space-x-8 overflow-x-auto">
+            <div className="flex space-x-1 overflow-x-auto">
               {[
                 { id: 'classes', label: 'Classes', icon: BookOpen },
                 { id: 'attendance', label: 'Attendance', icon: Users },
@@ -597,14 +590,17 @@ function MainContent() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`nav-item flex items-center space-x-1 sm:space-x-2 py-3 sm:py-4 px-1 border-b-4 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                    className={`flex items-center space-x-2 px-4 sm:px-6 py-3 sm:py-4 font-semibold text-sm sm:text-base whitespace-nowrap transition-all duration-200 relative ${
                       activeTab === tab.id
-                        ? 'active border-[#8D0000] rounded'
-                        : 'border-transparent hover:border-[#8D0000]'
+                        ? 'text-cmu-maroon'
+                        : 'text-gray-600 hover:text-cmu-maroon'
                     }`}
                   >
-                    <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     <span>{tab.label}</span>
+                    {activeTab === tab.id && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-cmu-maroon rounded-t-full"></span>
+                    )}
                   </button>
                 );
               })}

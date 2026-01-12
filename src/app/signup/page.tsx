@@ -146,7 +146,7 @@ function SignupForm() {
                 className="block w-full pl-4 pr-10 py-3 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8D0000]/20 focus:border-[#8D0000] transition-all bg-white/80 hover:bg-white hover:border-gray-300 cursor-pointer"
               >
                 <option value="TEACHER">Instructor</option>
-                <option value="STUDENT">Student</option>
+                {/* <option value="STUDENT">Student</option> */}
               </select>
               {registerForm.formState.errors.role && (
                 <p className="mt-2 text-xs sm:text-sm text-red-600 font-medium">{registerForm.formState.errors.role.message}</p>
