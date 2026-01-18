@@ -58,7 +58,7 @@ const classSchema = z.object({
   schedule: z.string().min(1, 'Schedule is required'),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  locationRadius: z.number().min(1.5).max(30.5).optional(), // In meters (converted from feet: 5-100 feet = 1.5-30.5 meters)
+  locationRadius: z.number().min(5).max(100).optional(), // In feet
 });
 
 type ClassFormData = z.infer<typeof classSchema>;
@@ -168,8 +168,6 @@ export default function ClassManagement() {
 
   const handleEdit = (classItem: Class) => {
     setEditingClass(classItem);
-    // Convert meters to feet for display (1 meter = 3.28084 feet)
-    const locationRadiusInFeet = classItem.locationRadius ? classItem.locationRadius / 0.3048 : undefined;
     form.reset({
       name: classItem.name,
       description: classItem.description || '',
@@ -177,7 +175,7 @@ export default function ClassManagement() {
       schedule: classItem.schedule,
       latitude: classItem.latitude || undefined,
       longitude: classItem.longitude || undefined,
-      locationRadius: locationRadiusInFeet, // Will be converted back to meters on submit
+      locationRadius: classItem.locationRadius || undefined, // Now stored in feet directly
     });
     setShowForm(true);
   };
@@ -594,7 +592,7 @@ export default function ClassManagement() {
                     </p>
                     <p className="text-xs text-gray-700 font-mono">
                       {editingClass.latitude.toFixed(6)}, {editingClass.longitude.toFixed(6)}
-                      {editingClass.locationRadius && ` • ${Math.round(editingClass.locationRadius / 0.3048)}ft radius`}
+                      {editingClass.locationRadius && ` • ${Math.round(editingClass.locationRadius)}ft radius`}
                     </p>
                   </div>
                 )}
@@ -726,14 +724,7 @@ export default function ClassManagement() {
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Radius (feet)</label>
                     <input
-                      {...form.register('locationRadius', { 
-                        valueAsNumber: true,
-                        setValueAs: (v) => {
-                          // Convert feet to meters for backend (1 foot = 0.3048 meters)
-                          const feet = parseFloat(v);
-                          return isNaN(feet) ? undefined : feet * 0.3048;
-                        }
-                      })}
+                      {...form.register('locationRadius', { valueAsNumber: true })}
                       type="number"
                       min="5"
                       max="100"
